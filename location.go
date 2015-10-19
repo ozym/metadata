@@ -79,11 +79,12 @@ func (l Linknet) Default() string {
 type Equipment struct {
 	Name        string      `json:"name" comment:"The unique equipment name."`
 	Model       string      `json:"model" comment:"A generic equipment model name."`
-	Address     *IPAddress  `json:"address,omitempty" comment:"The primary equipment ip address"`
-	Aliases     []IPAddress `json:"aliases,omitempty" comment:"Extra equipment ip addresses"`
-	Code        *string     `json:"code,omitempty" comment:"Optional equipment code"`
-	Tags        []string    `json:"tags,omitempty" comment:"Extra equipment tags"`
-	Uninstalled *bool       `json:"uninstalled,omitempty" comment:"Indicate whether the equipment is present"`
+	Address     *IPAddress  `json:"address,omitempty" comment:"The primary equipment ip address used to connect."`
+	Aliases     []IPAddress `json:"aliases,omitempty" comment:"Any extra ip addresses assigned to the equipment."`
+	Code        *string     `json:"code,omitempty" comment:"Optional equipment code or label."`
+	Tags        []string    `json:"tags,omitempty" comment:"Any extra equipment tags or labels."`
+	Notes       *string     `json:"notes,omitempty" comment:"Any equipment specific notes or comments."`
+	Uninstalled *bool       `json:"uninstalled,omitempty" comment:"Indicate whether the equipment is not present."`
 }
 
 func (e Equipment) Encode(w io.Writer, prefix string) error {
@@ -91,14 +92,14 @@ func (e Equipment) Encode(w io.Writer, prefix string) error {
 }
 
 type Location struct {
-	Tag       string               `json:"tag" comment:"Location Tag"`
-	Name      string               `json:"name" comment:"Location Name"`
-	Latitude  *float32             `json:"latitude,omitempty" comment:"Location latitude."`
-	Longitude *float32             `json:"longitude,omitempty" comment:"Location longitude."`
-	Runnet    *IPNetwork           `json:"runnet,omitempty" comment:"Location runnet"`
-	Locnet    *bool                `json:"locnet,omitempty" comment:"Location locnet"`
-	Linknets  []Linknet            `json:"linknets,omitempty" comment:"Location linknets."`
-	Equipment map[string]Equipment `json:"equipment,omitempty" comment:"Location equipment."`
+	Tag       string               `json:"tag" comment:"Location specific tag."`
+	Name      string               `json:"name" comment:"Location place name."`
+	Latitude  *float32             `json:"latitude,omitempty" comment:"Optional location latitude."`
+	Longitude *float32             `json:"longitude,omitempty" comment:"Optional location longitude."`
+	Runnet    *IPNetwork           `json:"runnet,omitempty" comment:"Optional location runnet."`
+	Locnet    *bool                `json:"locnet,omitempty" comment:"Should a locnet be required."`
+	Linknets  []Linknet            `json:"linknets,omitempty" comment:"A list of required location linknets."`
+	Equipment map[string]Equipment `json:"equipment,omitempty" comment:"The equipment installed at the location."`
 }
 
 func (l Location) Encode(w io.Writer, prefix string) error {
