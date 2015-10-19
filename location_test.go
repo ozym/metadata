@@ -33,8 +33,8 @@ func TestLocation_File(t *testing.T) {
 					},
 					Model:       "Test Model 1",
 					Tags:        []string{"ABCD", "EFG", "HIJ"},
-					Code:        &[]string{"CODE"}[0],
 					Uninstalled: &[]bool{false}[0],
+					Notes:       &[]string{"Some Notes"}[0],
 				},
 				"test2": Equipment{
 					Name:        "test2-location",
@@ -50,8 +50,10 @@ func TestLocation_File(t *testing.T) {
 			t.Error(err)
 		}
 		if !l.Equal(f) {
-			t.Errorf("location file entry mismatch: %s [\n%s\n]", "testdata/location.toml", Diff(f, l))
+			t.Errorf("location file entry mismatch: %s [\n%s\n]", "testdata/location.toml", SimpleDiff(f, l))
 		}
+		t.Log(Location{}.String())
+		t.Log(f.String())
 	}
 	t.Log("Finished checking location files.")
 }

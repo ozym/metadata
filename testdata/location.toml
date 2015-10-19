@@ -50,6 +50,9 @@ name = "From A to C"
         # Whether the equipment is active, the default is false which represents an installed device.
         uninstalled=false
 
+        #
+        notes="Some Notes"
+
 [equipment.test2]
         name="test2-location"
         model="Test Model 2"
