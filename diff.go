@@ -6,7 +6,7 @@ import (
 )
 
 // simple debugging helper function
-func Diff(s1, s2 fmt.Stringer) string {
+func SimpleDiff(s1, s2 fmt.Stringer) string {
 	var h, w1, w2 int
 
 	l1 := strings.Split(

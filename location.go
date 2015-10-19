@@ -1,13 +1,9 @@
 package metadata
 
 import (
-	//	"encoding/json"
-	//	"fmt"
+	"io"
 	"net"
 	"reflect"
-	//	"strconv"
-	//"strings"
-	"io"
 
 	"github.com/BurntSushi/toml"
 )
@@ -70,7 +66,7 @@ type Linknet struct {
 }
 
 func (l Linknet) Encode(w io.Writer, prefix string) error {
-	return EncodeField(w, l, prefix)
+	return EncodeStruct(w, l, prefix)
 }
 func (l Linknet) Default() string {
 	return "default"
@@ -81,14 +77,13 @@ type Equipment struct {
 	Model       string      `json:"model" comment:"A generic equipment model name."`
 	Address     *IPAddress  `json:"address,omitempty" comment:"The primary equipment ip address used to connect."`
 	Aliases     []IPAddress `json:"aliases,omitempty" comment:"Any extra ip addresses assigned to the equipment."`
-	Code        *string     `json:"code,omitempty" comment:"Optional equipment code or label."`
 	Tags        []string    `json:"tags,omitempty" comment:"Any extra equipment tags or labels."`
 	Notes       *string     `json:"notes,omitempty" comment:"Any equipment specific notes or comments."`
 	Uninstalled *bool       `json:"uninstalled,omitempty" comment:"Indicate whether the equipment is not present."`
 }
 
 func (e Equipment) Encode(w io.Writer, prefix string) error {
-	return EncodeField(w, e, prefix)
+	return EncodeStruct(w, e, prefix)
 }
 
 type Location struct {
@@ -103,7 +98,7 @@ type Location struct {
 }
 
 func (l Location) Encode(w io.Writer, prefix string) error {
-	return EncodeField(w, l, prefix)
+	return EncodeStruct(w, l, prefix)
 }
 
 func (l Location) String() string {
