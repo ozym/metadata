@@ -4,6 +4,10 @@ tag = "location"
 # The name of the location, which is used for labels and general identification, punctuation should be avoided.
 name = "A Location Name"
 
+# location geographical position
+latitude = -41.5
+#longitude = 174.5
+
 # The site specific IP 192.168.X.Y/28 equipment range, which also provides a site specific supernet 10.X.Y.0/20.
 # These are generally split into /28 linknets with the first being defined as the local network (locnet).
 runnet = "192.168.192.0/28"
