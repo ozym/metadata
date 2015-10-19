@@ -129,8 +129,14 @@ func EncodeField(w io.Writer, i interface{}, prefix string) error {
 					}
 				}
 			} else {
-				if err := EncodeTOML(w, map[string]interface{}{label: v.Interface()}, prefix); err != nil {
-					return err
+				if v.Kind() == reflect.Slice && v.Len() == 0 {
+					if err := EncodeTOML(w, map[string]interface{}{label: v.Interface()}, prefix+"#"); err != nil {
+						return err
+					}
+				} else {
+					if err := EncodeTOML(w, map[string]interface{}{label: v.Interface()}, prefix); err != nil {
+						return err
+					}
 				}
 			}
 		case reflect.Ptr:
@@ -141,7 +147,7 @@ func EncodeField(w io.Writer, i interface{}, prefix string) error {
 						return err
 					}
 				case reflect.String:
-					if _, err := w.Write([]byte(prefix + fmt.Sprintf("#%s = \"a string\"\n\n", label))); err != nil {
+					if _, err := w.Write([]byte(prefix + fmt.Sprintf("#%s = \"text\"\n\n", label))); err != nil {
 						return err
 					}
 				case reflect.Int, reflect.Int8, reflect.Int32, reflect.Int64:
