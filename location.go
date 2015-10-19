@@ -1,84 +1,112 @@
 package metadata
 
 import (
-	"encoding/json"
+	//	"encoding/json"
+	//	"fmt"
 	"net"
 	"reflect"
+	//	"strconv"
+	//"strings"
+	"io"
 
 	"github.com/BurntSushi/toml"
 )
 
-type ipaddress struct {
-	net.IP
-}
-
-func (a *ipaddress) UnmarshalText(text []byte) error {
-
-	aa, _, err := net.ParseCIDR(string(text))
-	if err != nil {
-		return nil
-	}
-	*a = ipaddress{aa}
-
-	return nil
-}
-
-func ParseIPAddress(cidr string) *ipaddress {
-	a, _, err := net.ParseCIDR(cidr)
-	if err != nil {
-		return nil
-	}
-	return &ipaddress{a}
-}
-
-type ipnetwork struct {
+type IPAddress struct {
 	net.IPNet
 }
 
-func ParseIPNetwork(cidr string) *ipnetwork {
+func (a *IPAddress) UnmarshalText(text []byte) error {
+
+	aa, nn, err := net.ParseCIDR(string(text))
+	if err != nil {
+		return nil
+	}
+	*a = IPAddress{net.IPNet{IP: aa, Mask: nn.Mask}}
+
+	return nil
+}
+func (a IPAddress) MarshalText() ([]byte, error) {
+	return []byte(a.String()), nil
+}
+
+func ParseIPAddress(cidr string) *IPAddress {
+	a, n, err := net.ParseCIDR(cidr)
+	if err != nil {
+		return nil
+	}
+	return &IPAddress{net.IPNet{IP: a, Mask: n.Mask}}
+}
+
+type IPNetwork struct {
+	net.IPNet
+}
+
+func ParseIPNetwork(cidr string) *IPNetwork {
 	_, nn, err := net.ParseCIDR(cidr)
 	if err != nil {
 		return nil
 	}
-	return &ipnetwork{*nn}
+	return &IPNetwork{*nn}
 }
 
-func (n *ipnetwork) UnmarshalText(text []byte) error {
+func (n *IPNetwork) UnmarshalText(text []byte) error {
 
 	_, nn, err := net.ParseCIDR(string(text))
 	if err != nil {
 		return nil
 	}
-	*n = ipnetwork{*nn}
+	*n = IPNetwork{*nn}
 
 	return nil
 }
 
+func (n IPNetwork) MarshalText() ([]byte, error) {
+	return []byte(n.String()), nil
+}
+
 type Linknet struct {
-	Name string `json:"name"`
+	Name string `json:"name,omitempty" comment:"Linknet name."`
+}
+
+func (l Linknet) Encode(w io.Writer, prefix string) error {
+	return EncodeField(w, l, prefix)
+}
+func (l Linknet) Default() string {
+	return "default"
 }
 
 type Equipment struct {
-	Name        string      `json:"name"`
-	Model       string      `json:"model"`
-	Address     *ipaddress  `json:"address,omitempty"`
-	Addresses   []ipaddress `json:"addresses,omitempty"`
-	Tags        []string    `json:"tags,omitempty"`
-	Code        *string     `json:"code,omitempty"`
-	Uninstalled bool        `json:"uninstalled,omitempty"`
+	Name        string      `json:"name" comment:"The unique equipment name."`
+	Model       string      `json:"model" comment:"A generic equipment model name."`
+	Address     *IPAddress  `json:"address,omitempty" comment:"The primary equipment ip address"`
+	Aliases     []IPAddress `json:"aliases,omitempty" comment:"Extra equipment ip addresses"`
+	Code        *string     `json:"code,omitempty" comment:"Optional equipment code"`
+	Tags        []string    `json:"tags,omitempty" comment:"Extra equipment tags"`
+	Uninstalled *bool       `json:"uninstalled,omitempty" comment:"Indicate whether the equipment is present"`
+}
+
+func (e Equipment) Encode(w io.Writer, prefix string) error {
+	return EncodeField(w, e, prefix)
 }
 
 type Location struct {
-	Tag       string               `json:"tag"`
-	Name      string               `json:"name"`
-	Runnet    *ipnetwork           `json:"runnet,omitempty"`
-	Locnet    bool                 `json:"locnet,omitempty"`
-	Linknets  []Linknet            `json:"linknets,omitempty"`
-	Equipment map[string]Equipment `json:"equipment,omitempty"`
+	Tag       string               `json:"tag" comment:"Location Tag"`
+	Name      string               `json:"name" comment:"Location Name"`
+	Latitude  *float32             `json:"latitude,omitempty" comment:"Location latitude."`
+	Longitude *float32             `json:"longitude,omitempty" comment:"Location longitude."`
+	Runnet    *IPNetwork           `json:"runnet,omitempty" comment:"Location runnet"`
+	Locnet    *bool                `json:"locnet,omitempty" comment:"Location locnet"`
+	Linknets  []Linknet            `json:"linknets,omitempty" comment:"Location linknets."`
+	Equipment map[string]Equipment `json:"equipment,omitempty" comment:"Location equipment."`
+}
+
+func (l Location) Encode(w io.Writer, prefix string) error {
+	return EncodeField(w, l, prefix)
 }
 
 func (l Location) String() string {
-	j, _ := json.MarshalIndent(l, "", "\t")
+	j, _ := EncodeString(l)
 	return string(j)
 }
 func (l Location) Equal(location Location) bool {

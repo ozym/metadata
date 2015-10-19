@@ -5,11 +5,16 @@ import (
 	"strings"
 )
 
-func diff(s1, s2 fmt.Stringer) string {
+// simple debugging helper function
+func Diff(s1, s2 fmt.Stringer) string {
 	var h, w1, w2 int
 
-	l1 := strings.Split(strings.Replace(s1.String(), "\t", "  ", -1), "\n")
-	l2 := strings.Split(strings.Replace(s2.String(), "\t", "  ", -1), "\n")
+	l1 := strings.Split(
+		strings.Replace(s1.String(), "\t", "  ", -1), "\n",
+	)
+	l2 := strings.Split(
+		strings.Replace(s2.String(), "\t", "  ", -1), "\n",
+	)
 
 	if len(l1) > len(l2) {
 		h = len(l1)
