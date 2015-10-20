@@ -6,9 +6,9 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-func TestLocation_File(t *testing.T) {
+func TestEncoder_File(t *testing.T) {
 
-	t.Log("Check loading location files.")
+	t.Log("Check loading toml files.")
 	{
 
 		f := Location{
@@ -46,14 +46,15 @@ func TestLocation_File(t *testing.T) {
 		}
 
 		var l Location
-		if _, err := toml.DecodeFile("testdata/location.toml", &l); err != nil {
+		if _, err := toml.DecodeFile("testdata/example.toml", &l); err != nil {
 			t.Error(err)
 		}
 		if !l.Equal(f) {
-			t.Errorf("location file entry mismatch: %s [\n%s\n]", "testdata/location.toml", SimpleDiff(f, l))
+			t.Errorf("file entry mismatch: \n%s\n", SimpleDiff(f, l))
 		}
-		t.Log(Location{}.String())
-		t.Log(f.String())
+		if err := f.Validate(); err != nil {
+			t.Error(err)
+		}
 	}
 	t.Log("Finished checking location files.")
 }
