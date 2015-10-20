@@ -33,6 +33,9 @@ func ParseIPAddress(cidr string) *IPAddress {
 	}
 	return &IPAddress{net.IPNet{IP: a, Mask: n.Mask}}
 }
+func (a IPAddress) Validate() error {
+	return nil
+}
 
 type IPNetwork struct {
 	net.IPNet
@@ -60,6 +63,9 @@ func (n *IPNetwork) UnmarshalText(text []byte) error {
 func (n IPNetwork) MarshalText() ([]byte, error) {
 	return []byte(n.String()), nil
 }
+func (n IPNetwork) Validate() error {
+	return nil
+}
 
 type Linknet struct {
 	Name string `json:"name,omitempty" comment:"Linknet name."`
@@ -68,8 +74,8 @@ type Linknet struct {
 func (l Linknet) Encode(w io.Writer, prefix string) error {
 	return EncodeStruct(w, l, prefix)
 }
-func (l Linknet) Default() string {
-	return "default"
+func (l Linknet) Validate() error {
+	return nil
 }
 
 type Equipment struct {
@@ -84,6 +90,9 @@ type Equipment struct {
 
 func (e Equipment) Encode(w io.Writer, prefix string) error {
 	return EncodeStruct(w, e, prefix)
+}
+func (e Equipment) Validate() error {
+	return nil
 }
 
 type Location struct {
@@ -107,6 +116,27 @@ func (l Location) String() string {
 }
 func (l Location) Equal(location Location) bool {
 	return reflect.DeepEqual(l, location)
+}
+
+func (l Location) Validate() error {
+	var errs []error
+
+	for _, v := range l.Linknets {
+		if err := v.Validate(); err != nil {
+			errs = append(errs, err)
+		}
+	}
+	for _, e := range l.Equipment {
+		if err := e.Validate(); err != nil {
+			errs = append(errs, err)
+		}
+	}
+
+	if len(errs) > 0 {
+		return Errors(errs)
+	}
+
+	return nil
 }
 
 func LoadLocation(file string) (Location, error) {
