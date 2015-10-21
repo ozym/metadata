@@ -122,9 +122,6 @@ func (loc Location) String() string {
 	l = append(l, "#\t## An array of optional extra addresses associated with this equipment, these will provide the equipment name.")
 	l = append(l, fmt.Sprintf("#\t#aliases = []"))
 	l = append(l, "#")
-	l = append(l, "#\t## Equipment code, useful for monitoring or configuration")
-	l = append(l, fmt.Sprintf("#\t#code = %s", strconv.Quote("")))
-	l = append(l, "#")
 	l = append(l, "#\t## A string array of optional extra tags associated with this equipment.")
 	l = append(l, fmt.Sprintf("#\t#tags = []"))
 	l = append(l, "#")
@@ -159,7 +156,7 @@ func (loc Location) String() string {
 		l = append(l, "\t## An array of optional extra addresses associated with this equipment, these will provide the equipment name.")
 		var aliases []string
 		for _, a := range equipment.Aliases {
-			aliases = append(aliases, a.String())
+			aliases = append(aliases, strconv.Quote(a.String()))
 		}
 		if len(aliases) > 0 {
 			l = append(l, fmt.Sprintf("\taliases = [\n\t\t%s\n\t]", strings.Join(aliases, ",\n\t\t")))
