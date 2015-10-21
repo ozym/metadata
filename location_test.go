@@ -81,5 +81,6 @@ func TestLocation_File(t *testing.T) {
 		if !reflect.DeepEqual(l, f) {
 			t.Errorf("location file entry mismatch: %s", "testdata/location.toml")
 		}
+		t.Log(l.String())
 	}
 }
