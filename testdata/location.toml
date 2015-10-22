@@ -1,60 +1,117 @@
-# The site specific single word tag. This is used for DNS entries related to the site and for equipment linkages.
+## The unique site specific single word tag.
 tag = "location"
-#
-# The name of the location, which is used for labels and general identification, punctuation should be avoided.
+
+## The general name of the location.
 name = "A Location Name"
 
-# location geographical position
-latitude = -41.5
-#longitude = 174.5
+## Optional site geographical position.
+latitude = -41.5000
+#longitude = degrees
 
-# The site specific IP 192.168.X.Y/28 equipment range, which also provides a site specific supernet 10.X.Y.0/20.
-# These are generally split into /28 linknets with the first being defined as the local network (locnet).
+## An optional site specific IP 192.168.X.Y/28 equipment range.
 runnet = "192.168.192.0/28"
 
-# Should a locknet be defined, useful for network planning and network link association.
+## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.
 locnet = true
 
-# An array of /28 linking networks, the order dictates the offset. A linknet with no name can be assigned,
-# this will be skipped although it will still be used as a placeholder.
-[[linknets]]
-name = "From A to B"
+## An array of 10.X.Y.N/28 linking networks, the order dictates the network offset.
 
-[[linknets]]
+#[[linknet]]
+#    ## The name of the link, usually of the form "Remote Site to Local Site".
+#    name=""
 
-[[linknets]]
-name = "From A to C"
+[[linknet]]
+    ## The name of the link, usually of the form "Remote Site to Local Site".
+    name = "From A to B"
 
-# A map of site equipment, the map key will be prepended to a hyphen and the site location tag, to
-# provide the equipment DNS host entry.
-[equipment.test1]
-        # The name of the equipment, generally a equipment tag plus the site location tag.
-        name="test1-location"
+[[linknet]]
+    ## The name of the link, usually of the form "Remote Site to Local Site".
+    name = ""
 
-        # The model name, a generic term useful for monitoring or configuration.
-        model="Test Model 1"
+[[linknet]]
+    ## The name of the link, usually of the form "Remote Site to Local Site".
+    name = "From A to C"
 
-        # The assigned primary IP address of the equipment, this is expected to be returned for any DNS name lookups.
-        address="192.168.192.1/28"
+## A list of local devices.
 
-        # An array of optional extra addresses associated with this equipment, these will provide the equipment name
-        # for any DNS ip lookups.
-        aliases=[ "192.168.192.2/28", "192.168.192.3/28" ]
+#[device.label]
+#    ## The name of the device, generally an equipment tag plus the site location tag.
+#    name = ""
+#
+#    ## The model name, a generic term useful for monitoring or configuration.
+#    #model = ""
+#
+#    ## The assigned primary IP address of the device.
+#    #address = ""
+#
+#    ## An array of extra addresses associated with this device.
+#    #aliases = []
+#
+#    ## An array of extra tags associated with this device.
+#    #tags = []
+#
+#    ## Optional device specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """
+#
+#    ## Whether the device is not currently installed or active.
+#    #uninstalled = false
 
-        # An array of optional tags to associate with the equipment, these may be useful for monitoring or configuration.
-        tags=[ "ABCD", "EFG", "HIJ" ]
+[device.test1]
+    ## The name of the device, generally an equipment tag plus the site location tag.
+    name = "test1-location"
 
-        # An optional equipment code, which may be useful for configuration or monitoring.
-        code="CODE"
+    ## The model name, a generic term useful for monitoring or configuration.
+    model = "Test Model 1"
 
-        # Whether the equipment is active, the default is false which represents an installed device.
-        uninstalled=false
+    ## The assigned primary IP address of the device.
+    address = "192.168.192.1/28"
 
-        #
-        notes="Some Notes"
+    ## An array of extra addresses associated with this device.
+    aliases = [
+            "192.168.192.2/28",
+            "192.168.192.3/28"
+        ]
 
-[equipment.test2]
-        name="test2-location"
-        model="Test Model 2"
-        address="192.168.192.4/28"
-        uninstalled=true
+    ## An array of extra tags associated with this device.
+    tags = [
+            "ABCD",
+            "EFG",
+            "HIJ"
+        ]
+
+    ## Optional device specific notes and documentation.
+    notes = """\
+        Some Notes\n\
+        Some More Notes\n\
+        """
+
+    ## Whether the device is not currently installed or active.
+    uninstalled = false
+
+[device.test2]
+    ## The name of the device, generally an equipment tag plus the site location tag.
+    name = "test2-location"
+
+    ## The model name, a generic term useful for monitoring or configuration.
+    model = "Test Model 2"
+
+    ## The assigned primary IP address of the device.
+    address = "192.168.192.4/28"
+
+    ## An array of extra addresses associated with this device.
+    #aliases = []
+
+    ## An array of extra tags associated with this device.
+    #tags = []
+
+    ## Optional device specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
+
+    ## Whether the device is not currently installed or active.
+    uninstalled = true
+
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
