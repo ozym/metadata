@@ -18,29 +18,42 @@ func (k Keys) get(i int) string   { return k[i] }
 func SimpleDiff(s1, s2 string) string {
 
 	l1 := strings.Split(
-		strings.Replace(s1, "\t", "  ", -1), "\n",
+		strings.TrimSpace(strings.Replace(s1, "\t", "  ", -1)), "\n",
 	)
 	l2 := strings.Split(
-		strings.Replace(s2, "\t", "  ", -1), "\n",
+		strings.TrimSpace(strings.Replace(s2, "\t", "  ", -1)), "\n",
 	)
 
-	var w [2]int
-	for _, l := range l1 {
-		if len(l) > w[0] {
-			w[0] = len(l)
+	var n, w1, w2 int
+	for i := 0; i < len(l1) && i < len(l2); i++ {
+		if l1[i] == l2[i] {
+			continue
+		}
+		if len(l1[i]) > w1 {
+			w1 = len(l1[i])
+		}
+		if len(l2[i]) > w2 {
+			w2 = len(l2[i])
+		}
+		if l := len(fmt.Sprintf("%d", i+1)); l > n {
+			n = l
 		}
 	}
-	for _, l := range l2 {
-		if len(l) > w[1] {
-			w[1] = len(l)
+	for i := len(l2); i < len(l1); i++ {
+		if len(l1[i]) > w1 {
+			w1 = len(l1[i])
+		}
+		if l := len(fmt.Sprintf("%d", i+1)); l > n {
+			n = l
 		}
 	}
-
-	var n int
-	if len(l1) > len(l2) {
-		n = len(fmt.Sprintf("%d", len(l1)))
-	} else {
-		n = len(fmt.Sprintf("%d", len(l2)))
+	for i := len(l1); i < len(l2); i++ {
+		if len(l2[i]) > w2 {
+			w2 = len(l2[i])
+		}
+		if l := len(fmt.Sprintf("%d", i+1)); l > n {
+			n = l
+		}
 	}
 
 	var s []string
@@ -48,13 +61,13 @@ func SimpleDiff(s1, s2 string) string {
 		if l1[i] == l2[i] {
 			continue
 		}
-		s = append(s, fmt.Sprintf(fmt.Sprintf("\t[%%%dd]!!! %%-%ds ! %%-%ds !!!", n, w[0], w[1]), i, l1[i], l2[i]))
+		s = append(s, fmt.Sprintf(fmt.Sprintf("\t[%%%dd]!!! %%-%ds ! %%-%ds !!!", n, w1, w2), i+1, l1[i], l2[i]))
 	}
 	for i := len(l2); i < len(l1); i++ {
-		s = append(s, fmt.Sprintf(fmt.Sprintf("\t[%%%dd]+++ %%-%ds + %%-%ds +++", n, w[0], w[1]), i, l1[i], ""))
+		s = append(s, fmt.Sprintf(fmt.Sprintf("\t[%%%dd]+++ %%-%ds + %%-%ds +++", n, w1, w2), i+1, l1[i], ""))
 	}
 	for i := len(l1); i < len(l2); i++ {
-		s = append(s, fmt.Sprintf(fmt.Sprintf("\t[%%%dd]--- %%-%ds - %%-%ds ---", n, w[0], w[1]), i, "", l2[i]))
+		s = append(s, fmt.Sprintf(fmt.Sprintf("\t[%%%dd]--- %%-%ds - %%-%ds ---", n, w1, w2), i+1, "", l2[i]))
 	}
 
 	return strings.Join(s, "\n")

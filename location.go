@@ -66,17 +66,13 @@ func LoadLocations(dirname, filename string) ([]Location, error) {
 	return ll, nil
 }
 
-func (loc Location) StoreLocation(base string) error {
+func (loc Location) StoreLocation(dir string) error {
 
-	// per site directory
-	dir := base + "/" + loc.Tag
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return err
 	}
 
-	// output file name
-	filename := dir + "/" + "location.toml"
-	file, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err := os.OpenFile(dir+"/location.toml", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
@@ -94,6 +90,8 @@ func (loc Location) String() string {
 
 	var l []string
 
+	l = append(l, "# Location network and device information.")
+	l = append(l, "")
 	l = append(l, "## The unique site specific single word tag.")
 	l = append(l, fmt.Sprintf("tag = %s", strconv.Quote(loc.Tag)))
 	l = append(l, "")
