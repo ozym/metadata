@@ -3,6 +3,7 @@ package metadata
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -43,6 +44,26 @@ func LoadLocation(filename string) (*Location, error) {
 	}
 
 	return &l, nil
+}
+
+func LoadLocations(dirname, filename string) ([]Location, error) {
+	var ll []Location
+
+	err := filepath.Walk(dirname, func(path string, fi os.FileInfo, err error) error {
+		if err == nil && filepath.Base(path) == filename {
+			l, e := LoadLocation(path)
+			if e != nil {
+				return e
+			}
+			ll = append(ll, *l)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return ll, nil
 }
 
 func (loc Location) StoreLocation(base string) error {
