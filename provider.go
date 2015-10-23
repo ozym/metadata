@@ -52,13 +52,13 @@ func LoadProviders(dirname, filename string) ([]Provider, error) {
 	return pp, nil
 }
 
-func (pro Provider) StoreProvider(dir string) error {
+func (pro Provider) StoreProvider(path string) error {
 
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 		return err
 	}
 
-	file, err := os.OpenFile(dir+"/provider.toml", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}

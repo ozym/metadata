@@ -54,13 +54,13 @@ func LoadMakers(dirname, filename string) ([]Maker, error) {
 	return mm, nil
 }
 
-func (mak Maker) StoreMaker(dir string) error {
+func (mak Maker) StoreMaker(path string) error {
 
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 		return err
 	}
 
-	file, err := os.OpenFile(dir+"/maker.toml", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
