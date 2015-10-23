@@ -14,6 +14,10 @@ func (k Keys) Swap(i, j int)      { k[i], k[j] = k[j], k[i] }
 func (k Keys) Less(i, j int) bool { return k[i] < k[j] }
 func (k Keys) get(i int) string   { return k[i] }
 
+func Lines(notes string) []string {
+	return strings.Split(strings.TrimSpace(notes), "\n")
+}
+
 // simple debugging helper function
 func SimpleDiff(s1, s2 string) string {
 
