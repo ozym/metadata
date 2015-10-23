@@ -42,6 +42,13 @@ func init() {
 				Model:       "Test Model 2",
 				Uninstalled: &[]bool{true}[0],
 			},
+			"radio": Device{
+				Name:        "rf2somewhere-location",
+				Address:     MustParseIPAddress("192.168.192.5/28"),
+				Model:       "Test Radio",
+				Links:       []string{"somewhere"},
+				Uninstalled: &[]bool{true}[0],
+			},
 		},
 	}
 }
