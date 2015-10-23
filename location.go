@@ -21,6 +21,7 @@ type Device struct {
 	Address     *IPAddress  `json:"address,omitempty"`
 	Aliases     []IPAddress `json:"aliases,omitempty"`
 	Tags        []string    `json:"tags,omitempty"`
+	Links       []string    `json:"links,omitempty"`
 	Notes       *string     `json:"notes,omitempty"`
 	Uninstalled *bool       `json:"uninstalled,omitempty"`
 }
@@ -155,6 +156,9 @@ func (loc Location) String() string {
 	l = append(l, "#\t## An array of extra tags associated with this device.")
 	l = append(l, fmt.Sprintf("#\t#tags = []"))
 	l = append(l, "#")
+	l = append(l, "#\t## An array of locations linked to by this device.")
+	l = append(l, fmt.Sprintf("#\t#links = []"))
+	l = append(l, "#")
 	l = append(l, "#\t## Optional device specific notes and documentation.")
 	l = append(l, fmt.Sprintf("#\t#notes = \"\"\"\\\n#\t#\t\\n\\\n#\t#\t\"\"\""))
 	l = append(l, "#")
@@ -204,6 +208,13 @@ func (loc Location) String() string {
 			l = append(l, fmt.Sprintf("\ttags = [\n\t\t\t\"%s\"\n\t\t]", strings.Join(device.Tags, "\",\n\t\t\t\"")))
 		} else {
 			l = append(l, fmt.Sprintf("\t#tags = []"))
+		}
+		l = append(l, "")
+		l = append(l, "\t## An array of locations linked to by this device.")
+		if len(device.Links) > 0 {
+			l = append(l, fmt.Sprintf("\tlinks = [\n\t\t\t\"%s\"\n\t\t]", strings.Join(device.Links, "\",\n\t\t\t\"")))
+		} else {
+			l = append(l, fmt.Sprintf("\t#links = []"))
 		}
 		l = append(l, "")
 		l = append(l, "\t## Optional device specific notes and documentation.")
