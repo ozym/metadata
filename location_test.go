@@ -1,7 +1,7 @@
 package metadata
 
 import (
-	"fmt"
+	//	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -12,18 +12,11 @@ var testLocation Location
 
 func init() {
 
-	n, _ := ParseIPNetwork("192.168.192.0/28")
-
-	var a [4]*IPAddress
-	for i := 0; i < 4; i++ {
-		a[i], _ = ParseIPAddress(fmt.Sprintf("192.168.192.%d/28", i+1))
-	}
-
 	testLocation = Location{
 		Tag:      "location",
 		Name:     "A Location Name",
 		Latitude: &[]float32{-41.5}[0],
-		Runnet:   n,
+		Runnet:   MustParseIPNetwork("192.168.192.0/28"),
 		Locnet:   &[]bool{true}[0],
 		Linknets: []Linknet{
 			Linknet{Name: "From A to B"},
@@ -32,9 +25,12 @@ func init() {
 		},
 		Devices: map[string]Device{
 			"test1": Device{
-				Name:        "test1-location",
-				Address:     a[0],
-				Aliases:     []IPAddress{*a[1], *a[2]},
+				Name:    "test1-location",
+				Address: MustParseIPAddress("192.168.192.1/28"),
+				Aliases: []IPAddress{
+					*MustParseIPAddress("192.168.192.2/28"),
+					*MustParseIPAddress("192.168.192.3/28"),
+				},
 				Model:       "Test Model 1",
 				Tags:        []string{"ABCD", "EFG", "HIJ"},
 				Uninstalled: &[]bool{false}[0],
@@ -42,7 +38,7 @@ func init() {
 			},
 			"test2": Device{
 				Name:        "test2-location",
-				Address:     a[3],
+				Address:     MustParseIPAddress("192.168.192.4/28"),
 				Model:       "Test Model 2",
 				Uninstalled: &[]bool{true}[0],
 			},

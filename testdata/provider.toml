@@ -1,0 +1,68 @@
+# IP4 network allocation tables, for a given service provider or entity.
+
+#
+# RCF1918 private address space.
+#
+#    10.0.0.0/8
+#    192.168.0.0/16
+#    172.16.0.0/12
+#
+
+## The name of the network provider.
+name = "Example Provider"
+
+## Optional provider notes and documentation.
+notes = """\
+    Some Notes\n\
+    Some More Notes\n\
+    """
+
+## An array of provided network ranges.
+
+#[[range]]
+#    ## The name of the network range.
+#    name = ""
+#
+#    ## The network area identification.
+#    area = ""
+#
+#    ## An array of networks.
+#    networks = []
+
+[[range]]
+    ## The name of the network range.
+    name = "Private Networks"
+
+    ## The network area identification.
+    area = "0.0.0.1"
+
+    ## An array of networks.
+    networks = [
+        "10.100.41.0/24",
+        "10.100.45.0/24"
+    ]
+
+[[range]]
+    ## The name of the network range.
+    name = "More Private Networks"
+
+    ## The network area identification.
+    area = "0.0.0.2"
+
+    ## An array of networks.
+    networks = [
+        "10.51.0.0/16",
+        "10.52.0.0/16"
+    ]
+
+[[range]]
+    ## The name of the network range.
+    name = "An Empty Range"
+
+    ## The network area identification.
+    area = "0.0.0.3"
+
+    ## An array of networks.
+    #networks = []
+
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

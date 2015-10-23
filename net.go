@@ -29,6 +29,14 @@ func ParseIPAddress(cidr string) (*IPAddress, error) {
 	return &IPAddress{net.IPNet{IP: a, Mask: n.Mask}}, nil
 }
 
+func MustParseIPAddress(cidr string) *IPAddress {
+	a, n, err := net.ParseCIDR(cidr)
+	if err != nil {
+		return &IPAddress{}
+	}
+	return &IPAddress{net.IPNet{IP: a, Mask: n.Mask}}
+}
+
 type IPNetwork struct {
 	net.IPNet
 }
@@ -53,4 +61,12 @@ func ParseIPNetwork(cidr string) (*IPNetwork, error) {
 		return nil, err
 	}
 	return &IPNetwork{*nn}, nil
+}
+
+func MustParseIPNetwork(cidr string) *IPNetwork {
+	_, nn, err := net.ParseCIDR(cidr)
+	if err != nil {
+		return &IPNetwork{}
+	}
+	return &IPNetwork{*nn}
 }
