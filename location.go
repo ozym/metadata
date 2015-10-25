@@ -1,15 +1,115 @@
 package metadata
 
 import (
-	"fmt"
+	"bytes"
 	"os"
 	"path/filepath"
-	"sort"
-	"strconv"
-	"strings"
+	"text/template"
 
 	"github.com/BurntSushi/toml"
 )
+
+const locationTemplate = `# Location network and device information.
+
+## The unique site specific single word tag.
+tag = "{{.Tag}}"
+
+## The general name of the location.
+name = "{{.Name}}"
+
+## Optional site geographical position.
+{{if .Latitude}}latitude = {{LatLon .Latitude}}{{else}}#latitude = degrees{{end}}
+{{if .Longitude}}longitude = {{LatLon .Longitude}}{{else}}#longitude = degrees{{end}}
+
+## Optional provider notes and documentation.
+{{if .Notes}}notes = """\
+{{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
+{{end}}    """{{else}}#notes = """\
+#    \n\
+#    """{{end}}
+
+## An optional site specific IP 192.168.X.Y/28 equipment range.
+{{if .Runnet}}runnet = "{{.Runnet}}"{{else}}#runnet = ""{{end}}
+
+## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.
+locnet = {{.Locnet}}
+
+## An array of 10.X.Y.N/28 linking networks, the order dictates the network offset.
+
+#[[linknet]]
+#    ## The name of the link, usually of the form "Remote Site to Local Site".
+#    name = ""{{range .Linknets}}
+
+[[linknet]]
+    ## The name of the link, usually of the form "Remote Site to Local Site".
+    name = "{{.Name}}"{{end}}
+
+## A list of local devices.
+
+#[device.label]
+#    ## The name of the device, generally an equipment tag plus the site location tag.
+#    name = ""
+#
+#    ## The model name, a generic term useful for monitoring or configuration.
+#    model = ""
+#
+#    ## The assigned primary IP address of the device.
+#    #address = ""
+#
+#    ## An array of extra addresses associated with this device.
+#    #aliases = []
+#
+#    ## An array of extra tags associated with this device.
+#    #tags = []
+#
+#    ## An array of locations linked to by this device.
+#    #links = []
+#
+#    ## Optional device specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """
+#
+#    ## Whether the device is not currently installed or active.
+#    #uninstalled = false{{range $l, $d := .Devices}}
+
+[device.{{ $l }}]
+    ## The name of the device, generally an equipment tag plus the site location tag.
+    name = "{{.Name}}"
+
+    ## The model name, a generic term useful for monitoring or configuration.
+    model = "{{.Model}}"
+
+    ## The assigned primary IP address of the device.
+{{if .Address}}    address = "{{.Address}}"{{else}}    #address=""{{end}}
+
+    ## An array of extra addresses associated with this device.
+{{if .Aliases}}    aliases = [{{range $n, $t := .Aliases}}{{if gt $n 0}},{{end}}
+        "{{$t}}"{{end}}
+    ]{{else}}    #aliases = []{{end}}
+
+    ## An array of extra tags associated with this device.
+{{if .Tags}}    tags = [{{range $n, $t := .Tags}}{{if gt $n 0}},{{end}}
+        "{{$t}}"{{end}}
+    ]{{else}}    #tags = []{{end}}
+
+    ## An array of locations linked to by this device.
+{{if .Links}}    links = [{{range $n, $t := .Links}}{{if gt $n 0}},{{end}}
+        "{{$t}}"{{end}}
+    ]{{else}}    #links = []{{end}}
+
+    ## Optional device specific notes and documentation.
+{{if .Notes}}    notes = """\
+{{$lines := Lines .Notes}}{{range $k, $v := $lines}}        {{$v}}\n\
+{{end}}        """{{else}}    #notes = """\
+    #    \n\
+    #    """{{end}}
+
+    ## Whether the device is not currently installed or active.
+{{if .Uninstalled}}    uninstalled = {{.Uninstalled}}{{else}}    #unistalled = true|false{{end}}{{end}}
+
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+`
 
 type Linknet struct {
 	Name string `json:"name,omitempty"`
@@ -31,6 +131,7 @@ type Location struct {
 	Name      string            `json:"name"`
 	Latitude  *float32          `json:"latitude,omitempty"`
 	Longitude *float32          `json:"longitude,omitempty"`
+	Notes     *string           `json:"notes,omitempty"`
 	Runnet    *IPNetwork        `json:"runnet,omitempty"`
 	Locnet    *bool             `json:"locnet,omitempty"`
 	Linknets  []Linknet         `json:"linknets,omitempty" toml:"linknet"`
@@ -88,153 +189,21 @@ func (loc Location) StoreLocation(path string) error {
 }
 
 func (loc Location) String() string {
+	tplFuncMap := make(template.FuncMap)
+	tplFuncMap["Lines"] = Lines
+	tplFuncMap["LatLon"] = LatLon
 
-	var l []string
+	tmpl, err := template.New("").Funcs(tplFuncMap).Parse(locationTemplate)
+	if err != nil {
+		panic(err)
+	}
 
-	l = append(l, "# Location network and device information.")
-	l = append(l, "")
-	l = append(l, "## The unique site specific single word tag.")
-	l = append(l, fmt.Sprintf("tag = %s", strconv.Quote(loc.Tag)))
-	l = append(l, "")
-	l = append(l, "## The general name of the location.")
-	l = append(l, fmt.Sprintf("name = %s", strconv.Quote(loc.Name)))
-	l = append(l, "")
-	l = append(l, "## Optional site geographical position.")
-	if loc.Latitude != nil {
-		l = append(l, fmt.Sprintf("latitude = %.4f", *loc.Latitude))
-	} else {
-		l = append(l, fmt.Sprintf("#latitude = degrees"))
+	var doc bytes.Buffer
+	err = tmpl.Execute(&doc, loc)
+	if err != nil {
+		panic(err)
 	}
-	if loc.Longitude != nil {
-		l = append(l, fmt.Sprintf("longitude = %.4f", *loc.Longitude))
-	} else {
-		l = append(l, fmt.Sprintf("#longitude = degrees"))
-	}
-	l = append(l, "")
-	l = append(l, "## An optional site specific IP 192.168.X.Y/28 equipment range.")
-	if loc.Runnet != nil {
-		l = append(l, fmt.Sprintf("runnet = %s", strconv.Quote(loc.Runnet.String())))
-	} else {
-		l = append(l, fmt.Sprintf("#runnet = %s", strconv.Quote("192.168.0.0/28")))
-	}
-	l = append(l, "")
-	l = append(l, "## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.")
-	if loc.Locnet != nil {
-		l = append(l, fmt.Sprintf("locnet = %s", strconv.FormatBool(*loc.Locnet)))
-	} else {
-		l = append(l, fmt.Sprintf("#locnet = true|false"))
-	}
-	l = append(l, "")
-	l = append(l, "## An array of 10.X.Y.N/28 linking networks, the order dictates the network offset.")
-	l = append(l, "")
-	l = append(l, "#[[linknet]]")
-	l = append(l, "#\t## The name of the link, usually of the form \"Remote Site to Local Site\".")
-	l = append(l, fmt.Sprintf("#\tname=%s", strconv.Quote("")))
-	for i := 0; i < len(loc.Linknets); i++ {
-		l = append(l, "")
-		l = append(l, "[[linknet]]")
-		l = append(l, "\t## The name of the link, usually of the form \"Remote Site to Local Site\".")
-		l = append(l, fmt.Sprintf("\tname = %s", strconv.Quote(loc.Linknets[i].Name)))
-	}
-	l = append(l, "")
 
-	l = append(l, "## A list of local devices.")
-	l = append(l, "")
-	l = append(l, "#[device.label]")
-	l = append(l, "#\t## The name of the device, generally an equipment tag plus the site location tag.")
-	l = append(l, fmt.Sprintf("#\tname = %s", strconv.Quote("")))
-	l = append(l, "#")
-	l = append(l, "#\t## The model name, a generic term useful for monitoring or configuration.")
-	l = append(l, fmt.Sprintf("#\t#model = %s", strconv.Quote("")))
-	l = append(l, "#")
-	l = append(l, "#\t## The assigned primary IP address of the device.")
-	l = append(l, fmt.Sprintf("#\t#address = %s", strconv.Quote("")))
-	l = append(l, "#")
-	l = append(l, "#\t## An array of extra addresses associated with this device.")
-	l = append(l, fmt.Sprintf("#\t#aliases = []"))
-	l = append(l, "#")
-	l = append(l, "#\t## An array of extra tags associated with this device.")
-	l = append(l, fmt.Sprintf("#\t#tags = []"))
-	l = append(l, "#")
-	l = append(l, "#\t## An array of locations linked to by this device.")
-	l = append(l, fmt.Sprintf("#\t#links = []"))
-	l = append(l, "#")
-	l = append(l, "#\t## Optional device specific notes and documentation.")
-	l = append(l, fmt.Sprintf("#\t#notes = \"\"\"\\\n#\t#\t\\n\\\n#\t#\t\"\"\""))
-	l = append(l, "#")
-	l = append(l, "#\t## Whether the device is not currently installed or active.")
-	l = append(l, fmt.Sprintf("#\t#uninstalled = %s", strconv.FormatBool(false)))
+	return doc.String()
 
-	var keys Keys
-	for d, _ := range loc.Devices {
-		keys = append(keys, d)
-	}
-	sort.Sort(keys)
-
-	for _, d := range keys {
-		device, ok := loc.Devices[d]
-		if !ok {
-			continue
-		}
-		l = append(l, "")
-		l = append(l, fmt.Sprintf("[device.%s]", d))
-		l = append(l, "\t## The name of the device, generally an equipment tag plus the site location tag.")
-		l = append(l, fmt.Sprintf("\tname = %s", strconv.Quote(device.Name)))
-		l = append(l, "")
-		l = append(l, "\t## The model name, a generic term useful for monitoring or configuration.")
-		l = append(l, fmt.Sprintf("\tmodel = %s", strconv.Quote(device.Model)))
-		l = append(l, "")
-		l = append(l, "\t## The assigned primary IP address of the device.")
-
-		if device.Address != nil {
-			l = append(l, fmt.Sprintf("\taddress = %s", strconv.Quote(device.Address.String())))
-		} else {
-			l = append(l, fmt.Sprintf("\t#address = %s", strconv.Quote("")))
-		}
-		l = append(l, "")
-		l = append(l, "\t## An array of extra addresses associated with this device.")
-		var aliases []string
-		for _, a := range device.Aliases {
-			aliases = append(aliases, strconv.Quote(a.String()))
-		}
-		if len(aliases) > 0 {
-			l = append(l, fmt.Sprintf("\taliases = [\n\t\t\t%s\n\t\t]", strings.Join(aliases, ",\n\t\t\t")))
-		} else {
-			l = append(l, fmt.Sprintf("\t#aliases = []"))
-		}
-		l = append(l, "")
-		l = append(l, "\t## An array of extra tags associated with this device.")
-		if len(device.Tags) > 0 {
-			l = append(l, fmt.Sprintf("\ttags = [\n\t\t\t\"%s\"\n\t\t]", strings.Join(device.Tags, "\",\n\t\t\t\"")))
-		} else {
-			l = append(l, fmt.Sprintf("\t#tags = []"))
-		}
-		l = append(l, "")
-		l = append(l, "\t## An array of locations linked to by this device.")
-		if len(device.Links) > 0 {
-			l = append(l, fmt.Sprintf("\tlinks = [\n\t\t\t\"%s\"\n\t\t]", strings.Join(device.Links, "\",\n\t\t\t\"")))
-		} else {
-			l = append(l, fmt.Sprintf("\t#links = []"))
-		}
-		l = append(l, "")
-		l = append(l, "\t## Optional device specific notes and documentation.")
-		if device.Notes != nil {
-			n := strings.Split(strings.Replace(strings.TrimSpace(*device.Notes), "\\n", "\n", -1), "\n")
-			l = append(l, fmt.Sprintf("\tnotes = \"\"\"\\\n\t\t%s\\n\\\n\t\t\"\"\"", strings.Join(n, "\\n\\\n\t\t")))
-		} else {
-			l = append(l, fmt.Sprintf("\t#notes = \"\"\"\\\n\t#\t\\n\\\n\t#\t\"\"\""))
-		}
-		l = append(l, "")
-		l = append(l, "\t## Whether the device is not currently installed or active.")
-		if device.Uninstalled != nil {
-			l = append(l, fmt.Sprintf("\tuninstalled = %s", strconv.FormatBool(*device.Uninstalled)))
-		} else {
-			l = append(l, fmt.Sprintf("\t#uninstalled = %s", strconv.FormatBool(false)))
-		}
-	}
-	l = append(l, "")
-	l = append(l, "# "+"vim:"+" tabstop=4 expandtab shiftwidth=4 softtabstop=4")
-	l = append(l, "")
-
-	return strings.Replace(strings.Join(l, "\n"), "\t", "    ", -1)
 }

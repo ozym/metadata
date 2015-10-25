@@ -10,6 +10,12 @@ name = "A Location Name"
 latitude = -41.5000
 #longitude = degrees
 
+## Optional provider notes and documentation.
+notes = """\
+    Some Notes\n\
+    Some More Notes\n\
+    """
+
 ## An optional site specific IP 192.168.X.Y/28 equipment range.
 runnet = "192.168.192.0/28"
 
@@ -20,7 +26,7 @@ locnet = true
 
 #[[linknet]]
 #    ## The name of the link, usually of the form "Remote Site to Local Site".
-#    name=""
+#    name = ""
 
 [[linknet]]
     ## The name of the link, usually of the form "Remote Site to Local Site".
@@ -41,7 +47,7 @@ locnet = true
 #    name = ""
 #
 #    ## The model name, a generic term useful for monitoring or configuration.
-#    #model = ""
+#    model = ""
 #
 #    ## The assigned primary IP address of the device.
 #    #address = ""
@@ -81,8 +87,8 @@ locnet = true
 
     ## An array of locations linked to by this device.
     links = [
-            "somewhere"
-        ]
+        "somewhere"
+    ]
 
     ## Optional device specific notes and documentation.
     #notes = """\
@@ -104,16 +110,16 @@ locnet = true
 
     ## An array of extra addresses associated with this device.
     aliases = [
-            "192.168.192.2/28",
-            "192.168.192.3/28"
-        ]
+        "192.168.192.2/28",
+        "192.168.192.3/28"
+    ]
 
     ## An array of extra tags associated with this device.
     tags = [
-            "ABCD",
-            "EFG",
-            "HIJ"
-        ]
+        "ABCD",
+        "EFG",
+        "HIJ"
+    ]
 
     ## An array of locations linked to by this device.
     #links = []

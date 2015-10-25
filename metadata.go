@@ -18,6 +18,10 @@ func Lines(notes string) []string {
 	return strings.Split(strings.TrimSpace(notes), "\n")
 }
 
+func LatLon(latlon *float32) string {
+	return fmt.Sprintf("%.4f", *latlon)
+}
+
 // simple debugging helper function
 func SimpleDiff(s1, s2 string) string {
 

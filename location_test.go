@@ -16,6 +16,7 @@ func init() {
 		Tag:      "location",
 		Name:     "A Location Name",
 		Latitude: &[]float32{-41.5}[0],
+		Notes:    &[]string{"Some Notes\nSome More Notes"}[0],
 		Runnet:   MustParseIPNetwork("192.168.192.0/28"),
 		Locnet:   &[]bool{true}[0],
 		Linknets: []Linknet{
