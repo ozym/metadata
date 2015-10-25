@@ -87,6 +87,5 @@ func TestMaker_LoadFiles(t *testing.T) {
 		if m[0].String() != testMaker.String() {
 			t.Errorf("maker file decode mismatch: [\n%s\n]", SimpleDiff(m[0].String(), testMaker.String()))
 		}
-		//		t.Log(m[0].String())
 	}
 }

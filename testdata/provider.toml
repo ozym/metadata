@@ -28,6 +28,11 @@ notes = """\
 #
 #    ## An array of networks.
 #    networks = []
+#
+#    ## Optional model specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """
 
 [[range]]
     ## The name of the network range.
@@ -42,6 +47,11 @@ notes = """\
         "10.100.45.0/24"
     ]
 
+    ## Optional model specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
+
 [[range]]
     ## The name of the network range.
     name = "More Private Networks"
@@ -55,6 +65,11 @@ notes = """\
         "10.52.0.0/16"
     ]
 
+    ## Optional model specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
+
 [[range]]
     ## The name of the network range.
     name = "An Empty Range"
@@ -64,5 +79,10 @@ notes = """\
 
     ## An array of networks.
     #networks = []
+
+    ## Optional model specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

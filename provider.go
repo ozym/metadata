@@ -1,18 +1,75 @@
 package metadata
 
 import (
-	"fmt"
+	"bytes"
 	"os"
 	"path/filepath"
-	"strconv"
-	"strings"
+	"text/template"
 
 	"github.com/BurntSushi/toml"
 )
 
+const providerTemplate = `# IP4 network allocation tables, for a given service provider or entity.
+
+#
+# RCF1918 private address space.
+#
+#    10.0.0.0/8
+#    192.168.0.0/16
+#    172.16.0.0/12
+#
+
+## The name of the network provider.
+name = "{{.Name}}"
+
+## Optional provider notes and documentation.
+notes = """\
+{{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
+{{end}}    """
+
+## An array of provided network ranges.
+
+#[[range]]
+#    ## The name of the network range.
+#    name = ""
+#
+#    ## The network area identification.
+#    area = ""
+#
+#    ## An array of networks.
+#    networks = []
+#
+#    ## Optional model specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """{{range .Ranges}}
+
+[[range]]
+    ## The name of the network range.
+    name = "{{.Name}}"
+
+    ## The network area identification.
+    area = "{{.Area}}"
+
+    ## An array of networks.
+{{if .Networks}}    networks = [{{range $n, $t := .Networks}}{{if gt $n 0}},{{end}}
+        "{{$t}}"{{end}}
+    ]{{else}}    #networks = []{{end}}
+
+    ## Optional model specific notes and documentation.
+{{if .Notes}}    notes = """\
+{{range $k, $v := $lines}}        {{$v}}\n\
+{{end}}        """{{else}}    #notes = """\
+    #    \n\
+    #    """{{end}}{{end}}
+
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
+`
+
 type Range struct {
 	Name     string      `json:"name"`
 	Area     string      `json:"area"`
+	Notes    *string     `json:"notes"`
 	Networks []IPNetwork `json:"networks,omitempty"`
 }
 
@@ -73,68 +130,20 @@ func (pro Provider) StoreProvider(path string) error {
 }
 
 func (pro Provider) String() string {
+	tplFuncMap := make(template.FuncMap)
+	tplFuncMap["Lines"] = Lines
 
-	var l []string
-
-	l = append(l, "# IP4 network allocation tables, for a given service provider or entity.")
-	l = append(l, "")
-	l = append(l, "#")
-	l = append(l, "# RCF1918 private address space.")
-	l = append(l, "#")
-	l = append(l, "#    10.0.0.0/8")
-	l = append(l, "#    192.168.0.0/16")
-	l = append(l, "#    172.16.0.0/12")
-	l = append(l, "#")
-	l = append(l, "")
-
-	l = append(l, "## The name of the network provider.")
-	l = append(l, fmt.Sprintf("name = %s", strconv.Quote(pro.Name)))
-	l = append(l, "")
-
-	l = append(l, "## Optional provider notes and documentation.")
-	if pro.Notes != nil {
-		n := strings.Split(strings.Replace(strings.TrimSpace(*pro.Notes), "\\n", "\n", -1), "\n")
-		l = append(l, fmt.Sprintf("notes = \"\"\"\\\n\t%s\\n\\\n\t\"\"\"", strings.Join(n, "\\n\\\n\t")))
-	} else {
-		l = append(l, fmt.Sprintf("#notes = \"\"\"\\\n#\t\\n\\\n#\t\"\"\""))
-	}
-	l = append(l, "")
-	l = append(l, "## An array of provided network ranges.")
-	l = append(l, "")
-	l = append(l, "#[[range]]")
-	l = append(l, "#\t## The name of the network range.")
-	l = append(l, "#\tname = \"\"")
-	l = append(l, "#")
-	l = append(l, "#\t## The network area identification.")
-	l = append(l, "#\tarea = \"\"")
-	l = append(l, "#")
-	l = append(l, "#\t## An array of networks.")
-	l = append(l, "#\tnetworks = []")
-	for i := 0; i < len(pro.Ranges); i++ {
-		l = append(l, "")
-		l = append(l, "[[range]]")
-		l = append(l, "\t## The name of the network range.")
-		l = append(l, fmt.Sprintf("\tname = %s", strconv.Quote(pro.Ranges[i].Name)))
-		l = append(l, "")
-		l = append(l, "\t## The network area identification.")
-		l = append(l, fmt.Sprintf("\tarea = %s", strconv.Quote(pro.Ranges[i].Area)))
-		l = append(l, "")
-		l = append(l, "\t## An array of networks.")
-
-		var networks []string
-		for _, n := range pro.Ranges[i].Networks {
-			networks = append(networks, strconv.Quote(n.String()))
-		}
-		if len(pro.Ranges[i].Networks) > 0 {
-			l = append(l, fmt.Sprintf("\tnetworks = [\n\t\t%s\n\t]", strings.Join(networks, ",\n\t\t")))
-		} else {
-			l = append(l, fmt.Sprintf("\t#networks = []"))
-		}
+	tmpl, err := template.New("").Funcs(tplFuncMap).Parse(providerTemplate)
+	if err != nil {
+		panic(err)
 	}
 
-	l = append(l, "")
-	l = append(l, "# "+"vim:"+" tabstop=4 expandtab shiftwidth=4 softtabstop=4")
-	l = append(l, "")
+	var doc bytes.Buffer
+	err = tmpl.Execute(&doc, pro)
+	if err != nil {
+		panic(err)
+	}
 
-	return strings.Replace(strings.Join(l, "\n"), "\t", "    ", -1)
+	return doc.String()
+
 }
