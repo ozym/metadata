@@ -13,7 +13,7 @@ var testLocation Location
 func init() {
 
 	testLocation = Location{
-		Tag:      "location",
+		Id:       "location",
 		Name:     "A Location Name",
 		Latitude: &[]float32{-41.5}[0],
 		Notes:    &[]string{"Some Notes\nSome More Notes"}[0],

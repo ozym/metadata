@@ -1,7 +1,7 @@
 # Location network and device information.
 
-## The unique site specific single word tag.
-tag = "location"
+## The unique site specific single word id.
+id = "location"
 
 ## The general name of the location.
 name = "A Location Name"
