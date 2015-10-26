@@ -11,8 +11,8 @@ import (
 
 const locationTemplate = `# Location network and device information.
 
-## The unique site specific single word tag.
-tag = "{{.Tag}}"
+## The unique site specific single word id.
+id = "{{.Id}}"
 
 ## The general name of the location.
 name = "{{.Name}}"
@@ -49,7 +49,7 @@ type Device struct {
 */
 
 type Location struct {
-	Tag       string   `json:"tag"`
+	Id        string   `json:"id"`
 	Name      string   `json:"name"`
 	Latitude  *float32 `json:"latitude,omitempty"`
 	Longitude *float32 `json:"longitude,omitempty"`

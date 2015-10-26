@@ -1,0 +1,80 @@
+## The name of the equipment model.
+name = "An Example Model"
+
+## Primary device manufacturer.
+manufacturer = "An Example Model Manufacturer"
+
+## Optional model specific notes and documentation.
+notes = """\
+    Some Notes\n\
+    Some More Notes\n\
+    """
+
+## A list of device model versions.
+
+#[version.id]
+#    ## The name of the model version.
+#    name = ""
+#
+#    ## The generic type of the model version.
+#    type = ""
+#
+#    ## An array of extra tags associated with this version.
+#    #tags = []
+#
+#    ## Optional model version specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """
+
+[version.model_a]
+    ## The name of the device model.
+    name = "Model A"
+
+    ## The generic type of the model version.
+    type = "Model Type A"
+
+    ## An array of extra tags associated with this version.
+    #tags = []
+
+    ## Optional model version specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
+
+[version.model_b]
+    ## The name of the device model.
+    name = "Model B"
+
+    ## The generic type of the model version.
+    type = "Model Type B"
+
+    ## An array of extra tags associated with this version.
+    tags = [
+        "A",
+        "B",
+        "C"
+    ]
+
+    ## Optional model version specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
+
+[version.model_c]
+    ## The name of the device model.
+    name = "Model C"
+
+    ## The generic type of the model version.
+    type = ""
+
+    ## An array of extra tags associated with this version.
+    #tags = []
+
+    ## Optional model version specific notes and documentation.
+    notes = """\
+        Some Notes\n\
+        Some More Notes\n\
+        """
+
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
