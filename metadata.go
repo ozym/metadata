@@ -33,7 +33,7 @@ func (k Keys) Less(i, j int) bool { return k[i] < k[j] }
 func (k Keys) get(i int) string   { return k[i] }
 
 func Lines(notes string) []string {
-	return strings.Split(strings.TrimSpace(notes), "\n")
+	return strings.Split(strings.TrimSpace(strings.Replace(notes, "\r\n", "\n", -1)), "\n")
 }
 
 func LatLon(latlon *float32) string {
