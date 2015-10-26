@@ -17,40 +17,6 @@ func init() {
 		Name:     "A Location Name",
 		Latitude: &[]float32{-41.5}[0],
 		Notes:    &[]string{"Some Notes\nSome More Notes"}[0],
-		Runnet:   MustParseIPNetwork("192.168.192.0/28"),
-		Locnet:   &[]bool{true}[0],
-		Linknets: []Linknet{
-			Linknet{Name: "From A to B"},
-			Linknet{},
-			Linknet{Name: "From A to C"},
-		},
-		Devices: map[string]Device{
-			"test1": Device{
-				Name:    "test1-location",
-				Address: MustParseIPAddress("192.168.192.1/28"),
-				Aliases: []IPAddress{
-					*MustParseIPAddress("192.168.192.2/28"),
-					*MustParseIPAddress("192.168.192.3/28"),
-				},
-				Model:       "Test Model 1",
-				Tags:        []string{"ABCD", "EFG", "HIJ"},
-				Uninstalled: &[]bool{false}[0],
-				Notes:       &[]string{"Some Notes\nSome More Notes"}[0],
-			},
-			"test2": Device{
-				Name:        "test2-location",
-				Address:     MustParseIPAddress("192.168.192.4/28"),
-				Model:       "Test Model 2",
-				Uninstalled: &[]bool{true}[0],
-			},
-			"radio": Device{
-				Name:        "rf2somewhere-location",
-				Address:     MustParseIPAddress("192.168.192.5/28"),
-				Model:       "Test Radio",
-				Links:       []string{"somewhere"},
-				Uninstalled: &[]bool{true}[0],
-			},
-		},
 	}
 }
 

@@ -27,6 +27,40 @@ notes = """\
 {{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """
 
+## A list of provided services.
+
+#[service.label]
+#    ## The name of the provided service.
+#    name = ""
+#
+#    ## An optional service reference.
+#    #reference = ""
+#
+#    ## Optional contact details.
+#    #contact = ""
+#
+#    ## Optional service specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """{{range $k, $v := .Services}}
+
+[service.{{$k}}]
+    ## The name of the provided service.
+    name = "{{$v.Name}}"
+
+    ## An optional service reference.
+{{if $v.Reference}}    reference = "{{$v.Reference}}"{{else}}    #reference = ""{{end}}
+
+    ## Optional contact details.
+{{if $v.Contact}}    contact = "{{$v.Contact}}"{{else}}    #contact = ""{{end}}
+
+    ## Optional service specific notes and documentation.
+{{if $v.Notes}}    notes = """\
+{{$lines := Lines $v.Notes}}{{range $k, $v := $lines}}        {{$v}}\n\
+{{end}}        """{{else}}    #notes = """\
+    #    \n\
+    #    """{{end}}{{end}}
+
 ## An array of provided network ranges.
 
 #[[range]]
@@ -58,13 +92,20 @@ notes = """\
 
     ## Optional model specific notes and documentation.
 {{if .Notes}}    notes = """\
-{{range $k, $v := $lines}}        {{$v}}\n\
+{{$lines := Lines .Notes}}{{range $k, $v := $lines}}        {{$v}}\n\
 {{end}}        """{{else}}    #notes = """\
     #    \n\
     #    """{{end}}{{end}}
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 `
+
+type Service struct {
+	Name      string  `json:"name"`
+	Reference *string `json:"reference"`
+	Contact   *string `json:"contact"`
+	Notes     *string `json:"notes"`
+}
 
 type Range struct {
 	Name     string      `json:"name"`
@@ -74,9 +115,10 @@ type Range struct {
 }
 
 type Provider struct {
-	Name   string  `json:"name"`
-	Notes  *string `json:"notes"`
-	Ranges []Range `json:"ranges,omitempty" toml:"range"`
+	Name     string             `json:"name"`
+	Notes    *string            `json:"notes"`
+	Services map[string]Service `json:"services,omitempty" toml:"service"`
+	Ranges   []Range            `json:"ranges,omitempty" toml:"range"`
 }
 
 func LoadProvider(filename string) (*Provider, error) {

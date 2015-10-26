@@ -17,6 +17,39 @@ notes = """\
     Some More Notes\n\
     """
 
+## A list of provided services.
+
+#[service.label]
+#    ## The name of the provided service.
+#    name = ""
+#
+#    ## An optional service reference.
+#    #reference = ""
+#
+#    ## Optional contact details.
+#    #contact = ""
+#
+#    ## Optional service specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """
+
+[service.test]
+    ## The name of the provided service.
+    name = "Test Service"
+
+    ## An optional service reference.
+    reference = "ABC1234"
+
+    ## Optional contact details.
+    contact = "0800 123123"
+
+    ## Optional service specific notes and documentation.
+    notes = """\
+        Some Notes\n\
+        Some More Notes\n\
+        """
+
 ## An array of provided network ranges.
 
 #[[range]]
