@@ -1,0 +1,159 @@
+# Network and device IP address information.
+
+## The network location tag.
+location = "network"
+
+## Optional name of the network, defaults to location name.
+name = "A Network Name"
+
+## Optional network notes and documentation.
+notes = """\
+    Some Notes\n\
+    Some More Notes\n\
+    """
+
+## Optional site specific IP 192.168.X.Y/28 equipment range.
+runnet = "192.168.192.0/28"
+
+## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.
+locnet = true
+
+## An array of 10.X.Y.N/28 linking networks, the order dictates the network offset.
+
+#[[linknet]]
+#    ## The name of the link, usually of the form "Remote Site to Local Site".
+#    name = ""
+
+[[linknet]]
+    ## The name of the link, usually of the form "Remote Site to Local Site".
+    name = "From A to B"
+
+[[linknet]]
+    ## The name of the link, usually of the form "Remote Site to Local Site".
+    name = ""
+
+[[linknet]]
+    ## The name of the link, usually of the form "Remote Site to Local Site".
+    name = "From A to C"
+
+## A list of local devices.
+
+#[device.label]
+#    ## The name of the device, generally an equipment tag plus the site network tag.
+#    name = ""
+#
+#    ## The model name, a generic term useful for monitoring or configuration.
+#    model = ""
+#
+#    ## The assigned primary IP address of the device.
+#    #address = ""
+#
+#    ## An array of extra addresses associated with this device.
+#    #aliases = []
+#
+#    ## An array of extra tags associated with this device.
+#    #tags = []
+#
+#    ## An array of linked devices.
+#    #links = []
+#
+#    ## Optional device specific notes and documentation.
+#    #notes = """\
+#    #    \n\
+#    #    """
+#
+#    ## Whether the device is not currently installed or active.
+#    #uninstalled = false
+
+[device.radio]
+    ## The name of the device, generally an equipment tag plus the site network tag.
+    name = "rf2somewhere-network"
+
+    ## The model name, a generic term useful for monitoring or configuration.
+    model = "Test Radio"
+
+    ## The assigned primary IP address of the device.
+    address = "192.168.192.5/28"
+
+    ## An array of extra addresses associated with this device.
+    #aliases = []
+
+    ## An array of extra tags associated with this device.
+    #tags = []
+
+    ## An array of linked devices.
+    links = [
+        "rf2network-somewhere"
+    ]
+
+    ## Optional device specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
+
+    ## Whether the device is not currently installed or active.
+    uninstalled = true
+
+[device.test1]
+    ## The name of the device, generally an equipment tag plus the site network tag.
+    name = "test1-network"
+
+    ## The model name, a generic term useful for monitoring or configuration.
+    model = "Test Model 1"
+
+    ## The assigned primary IP address of the device.
+    address = "192.168.192.1/28"
+
+    ## An array of extra addresses associated with this device.
+    aliases = [
+        "192.168.192.2/28",
+        "192.168.192.3/28"
+    ]
+
+    ## An array of extra tags associated with this device.
+    tags = [
+        "ABCD",
+        "EFG",
+        "HIJ"
+    ]
+
+    ## An array of linked devices.
+    #links = []
+
+    ## Optional device specific notes and documentation.
+    notes = """\
+        Some Notes\n\
+        Some More Notes\n\
+        """
+
+    ## Whether the device is not currently installed or active.
+    uninstalled = false
+
+[device.test2]
+    ## The name of the device, generally an equipment tag plus the site network tag.
+    name = "test2-network"
+
+    ## The model name, a generic term useful for monitoring or configuration.
+    model = "Test Model 2"
+
+    ## The assigned primary IP address of the device.
+    address = "192.168.192.4/28"
+
+    ## An array of extra addresses associated with this device.
+    #aliases = []
+
+    ## An array of extra tags associated with this device.
+    #tags = []
+
+    ## An array of linked devices.
+    #links = []
+
+    ## Optional device specific notes and documentation.
+    #notes = """\
+    #    \n\
+    #    """
+
+    ## Whether the device is not currently installed or active.
+    uninstalled = true
+
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
