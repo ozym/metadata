@@ -10,7 +10,13 @@ name = "A Location Name"
 latitude = -41.5000
 #longitude = degrees
 
-## Optional provider notes and documentation.
+## Optional location access notes and documentation.
+access = """\
+    Some Access Info\n\
+    Some More Access Info\n\
+    """
+
+## Optional location notes and documentation.
 notes = """\
     Some Notes\n\
     Some More Notes\n\

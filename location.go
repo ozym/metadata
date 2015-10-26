@@ -21,7 +21,14 @@ name = "{{.Name}}"
 {{if .Latitude}}latitude = {{LatLon .Latitude}}{{else}}#latitude = degrees{{end}}
 {{if .Longitude}}longitude = {{LatLon .Longitude}}{{else}}#longitude = degrees{{end}}
 
-## Optional provider notes and documentation.
+## Optional location access notes and documentation.
+{{if .Access}}access = """\
+{{$lines := Lines .Access}}{{range $k, $v := $lines}}    {{$v}}\n\
+{{end}}    """{{else}}#access = """\
+#    \n\
+#    """{{end}}
+
+## Optional location notes and documentation.
 {{if .Notes}}notes = """\
 {{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """{{else}}#notes = """\
@@ -31,28 +38,12 @@ name = "{{.Name}}"
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 `
 
-/*
-type Linknet struct {
-	Name string `json:"name,omitempty"`
-}
-
-type Device struct {
-	Name        string      `json:"name"`
-	Model       string      `json:"model"`
-	Address     *IPAddress  `json:"address,omitempty"`
-	Aliases     []IPAddress `json:"aliases,omitempty"`
-	Tags        []string    `json:"tags,omitempty"`
-	Links       []string    `json:"links,omitempty"`
-	Notes       *string     `json:"notes,omitempty"`
-	Uninstalled *bool       `json:"uninstalled,omitempty"`
-}
-*/
-
 type Location struct {
 	Id        string   `json:"id"`
 	Name      string   `json:"name"`
 	Latitude  *float32 `json:"latitude,omitempty"`
 	Longitude *float32 `json:"longitude,omitempty"`
+	Access    *string  `json:"access,omitempty"`
 	Notes     *string  `json:"notes,omitempty"`
 }
 
