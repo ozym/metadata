@@ -1,0 +1,66 @@
+## Equipment details and installation history.
+
+## The equipment serial number.
+serial = "serial"
+
+## The equipment model name.
+model = "Model"
+
+## Optional equipment asset number.
+asset = "asset"
+
+## Optional equipment specific notes.
+notes = """\
+    Some Notes\n\
+    Some More Notes\n\
+    """
+
+## An array of equipment installations.
+
+#[[install]]
+#    ## The location of the equipment installation.
+#    location = ""
+#
+#    ## Installation start time.
+#    start = 2000-01-01T00:00:00Z
+#
+#    ## Optional installation stop time.
+#    #stop = datetime
+#
+#    ## Optional installation specific notes.
+#    #notes = """\
+#    #    \n\
+#    #    """
+
+[[install]]
+    ## The location of the equipment installation.
+    location = "location1"
+
+    ## Installation start time.
+    start = 2010-01-01T00:00:00Z
+
+    ## Optional installation stop time.
+    stop = 2011-01-01T00:00:00Z
+
+    ## Optional installation specific notes.
+    #notes = """\
+    #    \n\
+    #    """
+
+[[install]]
+    ## The location of the equipment installation.
+    location = "location2"
+
+    ## Installation start time.
+    start = 2012-01-01T00:00:00Z
+
+    ## Optional installation stop time.
+    #stop = datetime
+
+    ## Optional installation specific notes.
+    notes = """\
+        Some Notes\n\
+        Some More Notes\n\
+        """
+
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

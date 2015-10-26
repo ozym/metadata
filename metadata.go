@@ -3,9 +3,27 @@ package metadata
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
-const DateTimeFormat = "2006-01-02 15:04:05"
+const DateTimeFormat = "2006-01-02T15:04:05Z"
+
+func ParseTime(text string) (time.Time, error) {
+	return time.Parse(DateTimeFormat, string(text))
+}
+
+func MustParseTime(text string) time.Time {
+	t, _ := ParseTime(text)
+	return t
+}
+
+func DateTime(t time.Time) string {
+	return t.Format(DateTimeFormat)
+}
+
+func DateTimePtr(t *time.Time) string {
+	return t.Format(DateTimeFormat)
+}
 
 type Keys []string
 
