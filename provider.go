@@ -24,8 +24,10 @@ name = "{{.Name}}"
 
 ## Optional provider notes and documentation.
 notes = """\
-{{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
-{{end}}    """
+{{if .Notes}}{{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
+{{end}}    """{{else}}#notes = """\
+#    \n\
+#    """{{end}}
 
 ## A list of provided services.
 
