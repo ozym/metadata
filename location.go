@@ -17,7 +17,7 @@ id = "{{.Id}}"
 ## The general name of the location.
 name = "{{.Name}}"
 
-## Optional site geographical position.
+## Geographical position.
 {{if .Latitude}}latitude = {{LatLon .Latitude}}{{else}}#latitude = degrees{{end}}
 {{if .Longitude}}longitude = {{LatLon .Longitude}}{{else}}#longitude = degrees{{end}}
 
@@ -26,19 +26,19 @@ name = "{{.Name}}"
     "{{$t}}"{{end}}
 ]{{else}}#services = []{{end}}
 
-## An array of extra tags associated with this location.
+## An array of tags associated with this location.
 {{if .Tags}}tags = [{{range $n, $t := .Tags}}{{if gt $n 0}},{{end}}
     "{{$t}}"{{end}}
 ]{{else}}#tags = []{{end}}
 
-## Optional location access notes and documentation.
+## Access notes and documentation.
 {{if .Access}}access = """\
 {{$lines := Lines .Access}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """{{else}}#access = """\
 #    \n\
 #    """{{end}}
 
-## Optional location notes and documentation.
+## Location notes and documentation.
 {{if .Notes}}notes = """\
 {{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """{{else}}#notes = """\
