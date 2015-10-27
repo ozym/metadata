@@ -17,7 +17,7 @@ id = "{{.Id}}"
 ## The general name of the location.
 name = "{{.Name}}"
 
-## Optional site geographical position.
+## Geographical position.
 {{if .Latitude}}latitude = {{LatLon .Latitude}}{{else}}#latitude = degrees{{end}}
 {{if .Longitude}}longitude = {{LatLon .Longitude}}{{else}}#longitude = degrees{{end}}
 
@@ -26,27 +26,62 @@ name = "{{.Name}}"
     "{{$t}}"{{end}}
 ]{{else}}#services = []{{end}}
 
-## An array of extra tags associated with this location.
+## An array of tags associated with this location.
 {{if .Tags}}tags = [{{range $n, $t := .Tags}}{{if gt $n 0}},{{end}}
     "{{$t}}"{{end}}
 ]{{else}}#tags = []{{end}}
 
-## Optional location access notes and documentation.
+## Access notes and documentation.
 {{if .Access}}access = """\
 {{$lines := Lines .Access}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """{{else}}#access = """\
 #    \n\
 #    """{{end}}
 
-## Optional location notes and documentation.
+## Location notes and documentation.
 {{if .Notes}}notes = """\
 {{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """{{else}}#notes = """\
 #    \n\
 #    """{{end}}
 
+## Linked locations.
+
+#[[link]]
+#    ## Remote location.
+#    id = ""
+#
+#    ## Radio role.
+#    #role = ""
+#
+#    ## Frequency key.
+#    #key = ""
+#
+#    ## Antenna polarity.
+#    #polarity = ""{{range .Links}}
+
+[[link]]
+    ## Remote location.
+    id = "{{.Id}}"
+
+    ## Radio role.
+{{if .Role}}    role = "{{.Role}}"{{else}}#role = ""{{end}}
+
+    ## Frequency key.
+{{if .Key}}    key = "{{.Key}}"{{else}}#key = ""{{end}}
+
+    ## Antenna polarity.
+{{if .Polarity}}    polarity = "{{.Polarity}}"{{else}}#polarity = ""{{end}}{{end}}
+
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 `
+
+type Link struct {
+	Id       string  `json:"id"`
+	Role     *string `json:"role"`
+	Key      *string `json:"key"`
+	Polarity *string `json:"polarity"`
+}
 
 type Location struct {
 	Id        string   `json:"id"`
@@ -56,6 +91,7 @@ type Location struct {
 	Services  []string `json:"services,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
 	Access    *string  `json:"access,omitempty"`
+	Links     []Link   `json:"links,omitempty" toml:"link"`
 	Notes     *string  `json:"notes,omitempty"`
 }
 

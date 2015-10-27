@@ -6,7 +6,7 @@ id = "location"
 ## The general name of the location.
 name = "A Location Name"
 
-## Optional site geographical position.
+## Geographical position.
 latitude = -41.5000
 #longitude = degrees
 
@@ -16,22 +16,63 @@ services = [
     "Test 2 Service"
 ]
 
-## An array of extra tags associated with this location.
+## An array of tags associated with this location.
 tags = [
     "ABC",
     "DEF"
 ]
 
-## Optional location access notes and documentation.
+## Access notes and documentation.
 access = """\
     Some Access Info\n\
     Some More Access Info\n\
     """
 
-## Optional location notes and documentation.
+## Location notes and documentation.
 notes = """\
     Some Notes\n\
     Some More Notes\n\
     """
+
+## Linked locations.
+
+#[[link]]
+#    ## Remote location.
+#    id = ""
+#
+#    ## Radio role.
+#    #role = ""
+#
+#    ## Frequency key.
+#    #key = ""
+#
+#    ## Antenna polarity.
+#    #polarity = ""
+
+[[link]]
+    ## Remote location.
+    id = "somewhere"
+
+    ## Radio role.
+    role = "Role 1"
+
+    ## Frequency key.
+    key = "Key 1"
+
+    ## Antenna polarity.
+    polarity = "Polarity 1"
+
+[[link]]
+    ## Remote location.
+    id = "else"
+
+    ## Radio role.
+    role = "Role 2"
+
+    ## Frequency key.
+    key = "Key 2"
+
+    ## Antenna polarity.
+    polarity = "Polarity 2"
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

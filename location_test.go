@@ -18,8 +18,22 @@ func init() {
 		Latitude: &[]float32{-41.5}[0],
 		Services: []string{"Test 1 Service", "Test 2 Service"},
 		Tags:     []string{"ABC", "DEF"},
-		Access:   &[]string{"Some Access Info\nSome More Access Info"}[0],
-		Notes:    &[]string{"Some Notes\nSome More Notes"}[0],
+		Links: []Link{
+			Link{
+				Id:       "somewhere",
+				Key:      &[]string{"Key 1"}[0],
+				Role:     &[]string{"Role 1"}[0],
+				Polarity: &[]string{"Polarity 1"}[0],
+			},
+			Link{
+				Id:       "else",
+				Key:      &[]string{"Key 2"}[0],
+				Role:     &[]string{"Role 2"}[0],
+				Polarity: &[]string{"Polarity 2"}[0],
+			},
+		},
+		Access: &[]string{"Some Access Info\nSome More Access Info"}[0],
+		Notes:  &[]string{"Some Notes\nSome More Notes"}[0],
 	}
 }
 
