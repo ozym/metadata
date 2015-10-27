@@ -21,6 +21,11 @@ name = "{{.Name}}"
 {{if .Latitude}}latitude = {{LatLon .Latitude}}{{else}}#latitude = degrees{{end}}
 {{if .Longitude}}longitude = {{LatLon .Longitude}}{{else}}#longitude = degrees{{end}}
 
+## An array of service providers associated with this location.
+{{if .Services}}services = [{{range $n, $t := .Services}}{{if gt $n 0}},{{end}}
+    "{{$t}}"{{end}}
+]{{else}}#services = []{{end}}
+
 ## An array of extra tags associated with this location.
 {{if .Tags}}tags = [{{range $n, $t := .Tags}}{{if gt $n 0}},{{end}}
     "{{$t}}"{{end}}
@@ -48,6 +53,7 @@ type Location struct {
 	Name      string   `json:"name"`
 	Latitude  *float32 `json:"latitude,omitempty"`
 	Longitude *float32 `json:"longitude,omitempty"`
+	Services  []string `json:"services,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
 	Access    *string  `json:"access,omitempty"`
 	Notes     *string  `json:"notes,omitempty"`
