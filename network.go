@@ -29,7 +29,7 @@ location = "{{.Location}}"
 {{if .Runnet}}runnet = "{{.Runnet}}"{{else}}#runnet = ""{{end}}
 
 ## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.
-locnet = {{.Locnet}}
+{{if .Locnet}}locnet = {{.Locnet}}{{else}}#locnet = true|false{{end}}
 
 ## An array of 10.X.Y.N/28 linking networks, the order dictates the network offset.
 

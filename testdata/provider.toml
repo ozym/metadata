@@ -11,46 +11,46 @@
 ## The name of the network provider.
 name = "Example Provider"
 
-## Optional provider notes and documentation.
+## Povider notes and documentation.
 notes = """\
     Some Notes\n\
     Some More Notes\n\
     """
 
-## A list of provided services.
+## The provided services.
 
-#[service.label]
-#    ## The name of the provided service.
+#[[service]]
+#    ## The provided service.
 #    name = ""
 #
-#    ## An optional service reference.
+#    ## Service reference.
 #    #reference = ""
 #
-#    ## Optional contact details.
+#    ## Service contact details.
 #    #contact = ""
 #
-#    ## Optional service specific notes and documentation.
+#    ## Service specific notes.
 #    #notes = """\
 #    #    \n\
 #    #    """
 
-[service.test]
-    ## The name of the provided service.
+[[service]]
+    ## The provided service.
     name = "Test Service"
 
-    ## An optional service reference.
+    ## Service reference.
     reference = "ABC1234"
 
-    ## Optional contact details.
+    ## Service contact details.
     contact = "0800 123123"
 
-    ## Optional service specific notes and documentation.
+    ## Service specific notes.
     notes = """\
         Some Notes\n\
         Some More Notes\n\
         """
 
-## An array of provided network ranges.
+## The provided network ranges.
 
 #[[range]]
 #    ## The name of the network range.
