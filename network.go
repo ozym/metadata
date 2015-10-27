@@ -43,7 +43,7 @@ location = "{{.Location}}"
 
 ## Local devices.
 
-#[device.label]
+#[[device]]
 #    ## Device name, generally an equipment tag plus the site network tag.
 #    name = ""
 #
@@ -68,9 +68,9 @@ location = "{{.Location}}"
 #    #    """
 #
 #    ## Is the device uninstalled or unreachable.
-#    #uninstalled = false{{range $l, $d := .Devices}}
+#    #uninstalled = false{{range .Devices}}
 
-[device.{{ $l }}]
+[[device]]
     ## Device name, generally an equipment tag plus the site network tag.
     name = "{{.Name}}"
 
@@ -191,13 +191,13 @@ type Device struct {
 }
 
 type Network struct {
-	Location string            `json:"location"`
-	Name     *string           `json:"name,omitempty"`
-	Notes    *string           `json:"notes,omitempty"`
-	Runnet   *IPNetwork        `json:"runnet,omitempty"`
-	Locnet   *bool             `json:"locnet,omitempty"`
-	Linknets []Linknet         `json:"linknets,omitempty" toml:"linknet"`
-	Devices  map[string]Device `json:"devices,omitempty" toml:"device"`
+	Location string     `json:"location"`
+	Name     *string    `json:"name,omitempty"`
+	Notes    *string    `json:"notes,omitempty"`
+	Runnet   *IPNetwork `json:"runnet,omitempty"`
+	Locnet   *bool      `json:"locnet,omitempty"`
+	Linknets []Linknet  `json:"linknets,omitempty" toml:"linknet"`
+	Devices  []Device   `json:"devices,omitempty" toml:"device"`
 }
 
 func LoadNetwork(filename string) (*Network, error) {

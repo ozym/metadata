@@ -23,8 +23,15 @@ func init() {
 			Linknet{},
 			Linknet{Name: "From A to C"},
 		},
-		Devices: map[string]Device{
-			"test1": Device{
+		Devices: []Device{
+			Device{
+				Name:        "rf2somewhere-network",
+				Address:     MustParseIPAddress("192.168.192.5/28"),
+				Model:       "Test Radio",
+				Links:       []string{"rf2network-somewhere"},
+				Uninstalled: &[]bool{true}[0],
+			},
+			Device{
 				Name:    "test1-network",
 				Address: MustParseIPAddress("192.168.192.1/28"),
 				Aliases: []IPAddress{
@@ -36,17 +43,10 @@ func init() {
 				Uninstalled: &[]bool{false}[0],
 				Notes:       &[]string{"Some Notes\nSome More Notes"}[0],
 			},
-			"test2": Device{
+			Device{
 				Name:        "test2-network",
 				Address:     MustParseIPAddress("192.168.192.4/28"),
 				Model:       "Test Model 2",
-				Uninstalled: &[]bool{true}[0],
-			},
-			"radio": Device{
-				Name:        "rf2somewhere-network",
-				Address:     MustParseIPAddress("192.168.192.5/28"),
-				Model:       "Test Radio",
-				Links:       []string{"rf2network-somewhere"},
 				Uninstalled: &[]bool{true}[0],
 			},
 		},

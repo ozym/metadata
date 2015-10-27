@@ -38,7 +38,7 @@ locnet = true
 
 ## Local devices.
 
-#[device.label]
+#[[device]]
 #    ## Device name, generally an equipment tag plus the site network tag.
 #    name = ""
 #
@@ -65,7 +65,7 @@ locnet = true
 #    ## Is the device uninstalled or unreachable.
 #    #uninstalled = false
 
-[device.radio]
+[[device]]
     ## Device name, generally an equipment tag plus the site network tag.
     name = "rf2somewhere-network"
 
@@ -94,7 +94,7 @@ locnet = true
     ## Is the device uninstalled or unreachable.
     uninstalled = true
 
-[device.test1]
+[[device]]
     ## Device name, generally an equipment tag plus the site network tag.
     name = "test1-network"
 
@@ -129,7 +129,7 @@ locnet = true
     ## Is the device uninstalled or unreachable.
     uninstalled = false
 
-[device.test2]
+[[device]]
     ## Device name, generally an equipment tag plus the site network tag.
     name = "test2-network"
 
