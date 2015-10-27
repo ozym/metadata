@@ -10,6 +10,12 @@ name = "A Location Name"
 latitude = -41.5000
 #longitude = degrees
 
+## An array of service providers associated with this location.
+services = [
+    "Test 1 Service",
+    "Test 2 Service"
+]
+
 ## An array of extra tags associated with this location.
 tags = [
     "ABC",
