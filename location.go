@@ -45,8 +45,43 @@ name = "{{.Name}}"
 #    \n\
 #    """{{end}}
 
+## Linked locations.
+
+#[[link]]
+#    ## Remote location.
+#    id = ""
+#
+#    ## Radio role.
+#    #role = ""
+#
+#    ## Frequency key.
+#    #key = ""
+#
+#    ## Antenna polarity.
+#    #polarity = ""{{range .Links}}
+
+[[link]]
+    ## Remote location.
+    id = "{{.Id}}"
+
+    ## Radio role.
+{{if .Role}}    role = "{{.Role}}"{{else}}#role = ""{{end}}
+
+    ## Frequency key.
+{{if .Key}}    key = "{{.Key}}"{{else}}#key = ""{{end}}
+
+    ## Antenna polarity.
+{{if .Polarity}}    polarity = "{{.Polarity}}"{{else}}#polarity = ""{{end}}{{end}}
+
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 `
+
+type Link struct {
+	Id       string  `json:"id"`
+	Role     *string `json:"role"`
+	Key      *string `json:"key"`
+	Polarity *string `json:"polarity"`
+}
 
 type Location struct {
 	Id        string   `json:"id"`
@@ -56,6 +91,7 @@ type Location struct {
 	Services  []string `json:"services,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
 	Access    *string  `json:"access,omitempty"`
+	Links     []Link   `json:"links,omitempty" toml:"link"`
 	Notes     *string  `json:"notes,omitempty"`
 }
 
