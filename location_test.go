@@ -16,6 +16,7 @@ func init() {
 		Id:       "location",
 		Name:     "A Location Name",
 		Latitude: &[]float32{-41.5}[0],
+		Tags:     []string{"ABC", "DEF"},
 		Access:   &[]string{"Some Access Info\nSome More Access Info"}[0],
 		Notes:    &[]string{"Some Notes\nSome More Notes"}[0],
 	}

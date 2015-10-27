@@ -10,6 +10,12 @@ name = "A Location Name"
 latitude = -41.5000
 #longitude = degrees
 
+## An array of extra tags associated with this device.
+tags = [
+    "ABC",
+    "DEF"
+]
+
 ## Optional location access notes and documentation.
 access = """\
     Some Access Info\n\
