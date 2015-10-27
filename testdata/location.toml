@@ -1,4 +1,4 @@
-# Location network and device information.
+# Equipment location site information.
 
 ## The unique site specific single word id.
 id = "location"
@@ -10,7 +10,7 @@ name = "A Location Name"
 latitude = -41.5000
 #longitude = degrees
 
-## An array of extra tags associated with this device.
+## An array of extra tags associated with this location.
 tags = [
     "ABC",
     "DEF"

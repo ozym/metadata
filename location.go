@@ -9,7 +9,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-const locationTemplate = `# Location network and device information.
+const locationTemplate = `# Equipment location site information.
 
 ## The unique site specific single word id.
 id = "{{.Id}}"
@@ -21,7 +21,7 @@ name = "{{.Name}}"
 {{if .Latitude}}latitude = {{LatLon .Latitude}}{{else}}#latitude = degrees{{end}}
 {{if .Longitude}}longitude = {{LatLon .Longitude}}{{else}}#longitude = degrees{{end}}
 
-## An array of extra tags associated with this device.
+## An array of extra tags associated with this location.
 {{if .Tags}}tags = [{{range $n, $t := .Tags}}{{if gt $n 0}},{{end}}
     "{{$t}}"{{end}}
 ]{{else}}#tags = []{{end}}
