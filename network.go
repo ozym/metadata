@@ -12,20 +12,20 @@ import (
 
 const networkTemplate = `# Network and device IP address information.
 
-## The network location tag.
+## The network location ID tag.
 location = "{{.Location}}"
 
-## Optional name of the network, defaults to location name.
+## Name of the network, defaults to location name.
 {{if .Name}}name = "{{.Name}}"{{else}}#name = ""{{end}}
 
-## Optional network notes and documentation.
+## Network notes and documentation.
 {{if .Notes}}notes = """\
 {{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """{{else}}#notes = """\
 #    \n\
 #    """{{end}}
 
-## Optional site specific IP 192.168.X.Y/28 equipment range.
+## Site specific IP 192.168.X.Y/28 equipment range.
 {{if .Runnet}}runnet = "{{.Runnet}}"{{else}}#runnet = ""{{end}}
 
 ## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.
@@ -41,68 +41,68 @@ location = "{{.Location}}"
     ## The name of the link, usually of the form "Remote Site to Local Site".
     name = "{{.Name}}"{{end}}
 
-## A list of local devices.
+## Local devices.
 
 #[device.label]
-#    ## The name of the device, generally an equipment tag plus the site network tag.
+#    ## Device name, generally an equipment tag plus the site network tag.
 #    name = ""
 #
-#    ## The model name, a generic term useful for monitoring or configuration.
+#    ## Model name, a generic term useful for monitoring or configuration.
 #    model = ""
 #
-#    ## The assigned primary IP address of the device.
+#    ## Primary IP address of the device.
 #    #address = ""
 #
-#    ## An array of extra addresses associated with this device.
+#    ## Extra addresses associated with this device.
 #    #aliases = []
 #
-#    ## An array of extra tags associated with this device.
+#    ## Extra tags associated with this device.
 #    #tags = []
 #
-#    ## An array of linked devices.
+#    ## Linked devices.
 #    #links = []
 #
-#    ## Optional device specific notes and documentation.
+#    ## Device specific notes and documentation.
 #    #notes = """\
 #    #    \n\
 #    #    """
 #
-#    ## Whether the device is not currently installed or active.
+#    ## Is the device uninstalled or unreachable.
 #    #uninstalled = false{{range $l, $d := .Devices}}
 
 [device.{{ $l }}]
-    ## The name of the device, generally an equipment tag plus the site network tag.
+    ## Device name, generally an equipment tag plus the site network tag.
     name = "{{.Name}}"
 
-    ## The model name, a generic term useful for monitoring or configuration.
+    ## Model name, a generic term useful for monitoring or configuration.
     model = "{{.Model}}"
 
-    ## The assigned primary IP address of the device.
+    ## Primary IP address of the device.
 {{if .Address}}    address = "{{.Address}}"{{else}}    #address=""{{end}}
 
-    ## An array of extra addresses associated with this device.
+    ## Extra addresses associated with this device.
 {{if .Aliases}}    aliases = [{{range $n, $t := .Aliases}}{{if gt $n 0}},{{end}}
         "{{$t}}"{{end}}
     ]{{else}}    #aliases = []{{end}}
 
-    ## An array of extra tags associated with this device.
+    ## Extra tags associated with this device.
 {{if .Tags}}    tags = [{{range $n, $t := .Tags}}{{if gt $n 0}},{{end}}
         "{{$t}}"{{end}}
     ]{{else}}    #tags = []{{end}}
 
-    ## An array of linked devices.
+    ## Linked devices.
 {{if .Links}}    links = [{{range $n, $t := .Links}}{{if gt $n 0}},{{end}}
         "{{$t}}"{{end}}
     ]{{else}}    #links = []{{end}}
 
-    ## Optional device specific notes and documentation.
+    ## Device specific notes and documentation.
 {{if .Notes}}    notes = """\
 {{$lines := Lines .Notes}}{{range $k, $v := $lines}}        {{$v}}\n\
 {{end}}        """{{else}}    #notes = """\
     #    \n\
     #    """{{end}}
 
-    ## Whether the device is not currently installed or active.
+    ## Is the device uninstalled or unreachable.
 {{if .Uninstalled}}    uninstalled = {{.Uninstalled}}{{else}}    #unistalled = true|false{{end}}{{end}}
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
