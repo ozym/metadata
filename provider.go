@@ -22,48 +22,48 @@ const providerTemplate = `# IP4 network allocation tables, for a given service p
 ## The name of the network provider.
 name = "{{.Name}}"
 
-## Optional provider notes and documentation.
-notes = """\
-{{if .Notes}}{{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
+## Povider notes and documentation.
+{{if .Notes}}notes = """\
+{{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """{{else}}#notes = """\
 #    \n\
 #    """{{end}}
 
-## A list of provided services.
+## The provided services.
 
-#[service.label]
-#    ## The name of the provided service.
+#[[service]]
+#    ## The provided service.
 #    name = ""
 #
-#    ## An optional service reference.
+#    ## Service reference.
 #    #reference = ""
 #
-#    ## Optional contact details.
+#    ## Service contact details.
 #    #contact = ""
 #
-#    ## Optional service specific notes and documentation.
+#    ## Service specific notes.
 #    #notes = """\
 #    #    \n\
-#    #    """{{range $k, $v := .Services}}
+#    #    """{{range .Services}}
 
-[service.{{$k}}]
-    ## The name of the provided service.
-    name = "{{$v.Name}}"
+[[service]]
+    ## The provided service.
+    name = "{{.Name}}"
 
-    ## An optional service reference.
-{{if $v.Reference}}    reference = "{{$v.Reference}}"{{else}}    #reference = ""{{end}}
+    ## Service reference.
+{{if .Reference}}    reference = "{{.Reference}}"{{else}}    #reference = ""{{end}}
 
-    ## Optional contact details.
-{{if $v.Contact}}    contact = "{{$v.Contact}}"{{else}}    #contact = ""{{end}}
+    ## Service contact details.
+{{if .Contact}}    contact = "{{.Contact}}"{{else}}    #contact = ""{{end}}
 
-    ## Optional service specific notes and documentation.
-{{if $v.Notes}}    notes = """\
-{{$lines := Lines $v.Notes}}{{range $k, $v := $lines}}        {{$v}}\n\
+    ## Service specific notes.
+{{if .Notes}}    notes = """\
+{{$lines := Lines .Notes}}{{range $k, $v := $lines}}        {{$v}}\n\
 {{end}}        """{{else}}    #notes = """\
     #    \n\
     #    """{{end}}{{end}}
 
-## An array of provided network ranges.
+## The provided network ranges.
 
 #[[range]]
 #    ## The name of the network range.
@@ -112,15 +112,15 @@ type Service struct {
 type Range struct {
 	Name     string      `json:"name"`
 	Area     string      `json:"area"`
-	Notes    *string     `json:"notes"`
 	Networks []IPNetwork `json:"networks,omitempty"`
+	Notes    *string     `json:"notes"`
 }
 
 type Provider struct {
-	Name     string             `json:"name"`
-	Notes    *string            `json:"notes"`
-	Services map[string]Service `json:"services,omitempty" toml:"service"`
-	Ranges   []Range            `json:"ranges,omitempty" toml:"range"`
+	Name     string    `json:"name"`
+	Services []Service `json:"services,omitempty" toml:"service"`
+	Ranges   []Range   `json:"ranges,omitempty" toml:"range"`
+	Notes    *string   `json:"notes"`
 }
 
 func LoadProvider(filename string) (*Provider, error) {

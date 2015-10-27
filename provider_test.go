@@ -14,7 +14,7 @@ func init() {
 	testProvider = Provider{
 		Name:  "Example Provider",
 		Notes: &[]string{"Some Notes\nSome More Notes"}[0],
-		Services: map[string]Service{"test": Service{
+		Services: []Service{Service{
 			Name:      "Test Service",
 			Notes:     &[]string{"Some Notes\nSome More Notes"}[0],
 			Reference: &[]string{"ABC1234"}[0],
