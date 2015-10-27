@@ -21,6 +21,11 @@ name = "{{.Name}}"
 {{if .Latitude}}latitude = {{LatLon .Latitude}}{{else}}#latitude = degrees{{end}}
 {{if .Longitude}}longitude = {{LatLon .Longitude}}{{else}}#longitude = degrees{{end}}
 
+## An array of extra tags associated with this device.
+{{if .Tags}}tags = [{{range $n, $t := .Tags}}{{if gt $n 0}},{{end}}
+    "{{$t}}"{{end}}
+]{{else}}#tags = []{{end}}
+
 ## Optional location access notes and documentation.
 {{if .Access}}access = """\
 {{$lines := Lines .Access}}{{range $k, $v := $lines}}    {{$v}}\n\
@@ -43,6 +48,7 @@ type Location struct {
 	Name      string   `json:"name"`
 	Latitude  *float32 `json:"latitude,omitempty"`
 	Longitude *float32 `json:"longitude,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
 	Access    *string  `json:"access,omitempty"`
 	Notes     *string  `json:"notes,omitempty"`
 }
