@@ -17,13 +17,13 @@ func init() {
 		Model:  "Model",
 		Asset:  &[]string{"asset"}[0],
 		Notes:  &[]string{"Some Notes\nSome More Notes"}[0],
-		Installs: []Install{
-			Install{
+		Deploys: []Deploy{
+			Deploy{
 				Location: "location1",
 				Start:    MustParseTime("2010-01-01T00:00:00Z"),
 				Stop:     &[]time.Time{MustParseTime("2011-01-01T00:00:00Z")}[0],
 			},
-			Install{
+			Deploy{
 				Location: "location2",
 				Start:    MustParseTime("2012-01-01T00:00:00Z"),
 				Notes:    &[]string{"Some Notes\nSome More Notes"}[0],
