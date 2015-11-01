@@ -178,6 +178,26 @@ func LoadInstalls(path string) (Installs, error) {
 	return installs, nil
 }
 
+func LoadInstallsDir(dirname, filename string) (Installs, error) {
+	var installs Installs
+
+	err := filepath.Walk(dirname, func(path string, fi os.FileInfo, err error) error {
+		if err == nil && filepath.Base(path) == filename {
+			i, e := LoadInstalls(path)
+			if e != nil {
+				return e
+			}
+			installs = append(installs, i...)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return installs, nil
+}
+
 /*
 func (eq Equipment) StoreEquipment(path string) error {
 

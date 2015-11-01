@@ -1,2 +1,6 @@
 Seismic Station,Site Location,Sensor Model,Sensor Serial Number,Azimuth,Dip,Depth,Installation Start,Installation Stop
 ABCD,10,Model,Serial #1,10,10,10,2010-01-01T00:00:00Z,2011-01-01T00:00:00Z
+ABCD,20,Model,Serial #2,20,20,20,2010-01-01T00:00:00Z,9999-01-01T00:00:00Z
+EFGH,10,Model,Serial #3,10,10,10,2010-01-01T00:00:00Z,2011-01-01T00:00:00Z
+EFGH,20,Model,Serial #4,20,20,20,2010-01-01T00:00:00Z,2011-01-01T00:00:00Z
+EFGH,20,Model,Serial #5,20,20,20,2012-01-01T00:00:00Z,2013-01-01T00:00:00Z
