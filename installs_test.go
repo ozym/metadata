@@ -3,9 +3,6 @@ package metadata
 import (
 	"io/ioutil"
 	"testing"
-	//	"time"
-
-	//	"github.com/BurntSushi/toml"
 )
 
 var testInstalls Installs
@@ -24,23 +21,53 @@ func init() {
 			Start:   MustParseTime("2010-01-01T00:00:00Z"),
 			Stop:    MustParseTime("2011-01-01T00:00:00Z"),
 		},
+		Install{
+			Station: "ABCD",
+			Site:    "20",
+			Model:   "Model",
+			Serial:  "Serial #2",
+			Azimuth: 20.0,
+			Dip:     20.0,
+			Depth:   20.0,
+			Start:   MustParseTime("2010-01-01T00:00:00Z"),
+			Stop:    MustParseTime("9999-01-01T00:00:00Z"),
+		},
+		Install{
+			Station: "EFGH",
+			Site:    "10",
+			Model:   "Model",
+			Serial:  "Serial #3",
+			Azimuth: 10.0,
+			Dip:     10.0,
+			Depth:   10.0,
+			Start:   MustParseTime("2010-01-01T00:00:00Z"),
+			Stop:    MustParseTime("2011-01-01T00:00:00Z"),
+		},
+		Install{
+			Station: "EFGH",
+			Site:    "20",
+			Model:   "Model",
+			Serial:  "Serial #4",
+			Azimuth: 20.0,
+			Dip:     20.0,
+			Depth:   20.0,
+			Start:   MustParseTime("2010-01-01T00:00:00Z"),
+			Stop:    MustParseTime("2011-01-01T00:00:00Z"),
+		},
+		Install{
+			Station: "EFGH",
+			Site:    "20",
+			Model:   "Model",
+			Serial:  "Serial #5",
+			Azimuth: 20.0,
+			Dip:     20.0,
+			Depth:   20.0,
+			Start:   MustParseTime("2012-01-01T00:00:00Z"),
+			Stop:    MustParseTime("2013-01-01T00:00:00Z"),
+		},
 	}
-}
 
-/*
-func TestInstalls_DecodeFile(t *testing.T) {
-	t.Log("Check decoding installs file.")
-	{
-		var i Installs
-		if _, err := installs.DecodeFile("testdata/installs.csv", &i); err != nil {
-			t.Fatal(err)
-		}
-		if i.String() != testInstalls.String() {
-			t.Errorf("installs file text mismatch: [\n%s\n]", SimpleDiff(i.String(), testInstalls.String()))
-		}
-	}
 }
-*/
 
 func TestInstalls_ReadFile(t *testing.T) {
 	t.Log("Compare loaded installs file.")
@@ -71,7 +98,6 @@ func TestInstalls_LoadFile(t *testing.T) {
 	}
 }
 
-/*
 func TestInstalls_LoadFiles(t *testing.T) {
 	t.Log("Check loading installs files.")
 	{
@@ -79,12 +105,8 @@ func TestInstalls_LoadFiles(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if len(m) != 1 {
-			t.Fatalf("installs files load problem")
-		}
-		if m[0].String() != testInstalls.String() {
-			t.Errorf("installs file decode mismatch: [\n%s\n]", SimpleDiff(m[0].String(), testInstalls.String()))
+		if m.String() != testInstalls.String() {
+			t.Errorf("installs file decode mismatch: [\n%s\n]", SimpleDiff(m.String(), testInstalls.String()))
 		}
 	}
 }
-*/
