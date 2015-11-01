@@ -7,6 +7,7 @@ import (
 
 var testSensorInstalls SensorInstalls
 var testDataloggerInstalls DataloggerInstalls
+var testEquipmentInstalls EquipmentInstalls
 
 func init() {
 
@@ -86,6 +87,37 @@ func init() {
 			Stop:    MustParseTime("9999-01-01T00:00:00Z"),
 		},
 	}
+
+	testEquipmentInstalls = EquipmentInstalls{
+		EquipmentInstall{
+			Location: "Somewhere",
+			Model:    "Model #1",
+			Serial:   "Serial #1",
+			Start:    MustParseTime("2010-01-01T00:00:00Z"),
+			Stop:     MustParseTime("2011-01-01T00:00:00Z"),
+		},
+		EquipmentInstall{
+			Location: "Somewhere",
+			Model:    "Model #2",
+			Serial:   "Serial #2",
+			Start:    MustParseTime("2010-01-01T00:00:00Z"),
+			Stop:     MustParseTime("2011-01-01T00:00:00Z"),
+		},
+		EquipmentInstall{
+			Location: "Somewhere Else",
+			Model:    "Model #2",
+			Serial:   "Serial #2",
+			Start:    MustParseTime("2012-01-01T00:00:00Z"),
+			Stop:     MustParseTime("2013-01-01T00:00:00Z"),
+		},
+		EquipmentInstall{
+			Location: "Somewhere Else",
+			Model:    "Model #1",
+			Serial:   "Serial #1",
+			Start:    MustParseTime("2012-01-01T00:00:00Z"),
+			Stop:     MustParseTime("2013-01-01T00:00:00Z"),
+		},
+	}
 }
 
 func TestSensorInstalls_ReadFile(t *testing.T) {
@@ -162,6 +194,45 @@ func TestDataloggerInstalls_LoadFiles(t *testing.T) {
 		}
 		if Strings(installs) != Strings(testDataloggerInstalls) {
 			t.Errorf("datalogger installs file decode mismatch: [\n%s\n]", SimpleDiff(Strings(installs), Strings(testDataloggerInstalls)))
+		}
+	}
+}
+
+func TestEquipmentInstalls_ReadFile(t *testing.T) {
+	t.Log("Compare loaded equipment installs file.")
+	{
+		b, err := ioutil.ReadFile("testdata/equipment.csv")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if string(b) != Strings(testEquipmentInstalls) {
+			t.Errorf("equipment installs file text mismatch: [\n%s\n]", SimpleDiff(string(b), Strings(testEquipmentInstalls)))
+		}
+	}
+}
+
+func TestEquipmentInstalls_LoadFile(t *testing.T) {
+	t.Log("Check loading equipment installs file.")
+	{
+		var installs EquipmentInstalls
+		if err := LoadInstall("testdata/equipment.csv", &installs); err != nil {
+			t.Fatal(err)
+		}
+		if Strings(installs) != Strings(testEquipmentInstalls) {
+			t.Errorf("equipment installs file decode mismatch: [\n%s\n]", SimpleDiff(Strings(installs), Strings(testEquipmentInstalls)))
+		}
+	}
+}
+
+func TestEquipmentInstalls_LoadFiles(t *testing.T) {
+	t.Log("Check loading equipment installs files.")
+	{
+		var installs EquipmentInstalls
+		if err := LoadInstalls("testdata", "equipment.csv", &installs); err != nil {
+			t.Fatal(err)
+		}
+		if Strings(installs) != Strings(testEquipmentInstalls) {
+			t.Errorf("equipment installs file decode mismatch: [\n%s\n]", SimpleDiff(Strings(installs), Strings(testEquipmentInstalls)))
 		}
 	}
 }
