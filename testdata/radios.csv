@@ -1,0 +1,3 @@
+Radio Location,Radio Target Location,Radio Role,Radio Model,Radio Serial Number,Antenna Polarity,Frequency Key
+Somewhere,Somewhere Else,Master,Radio Model #1,Radio Serial #1,V,10
+Somewhere Else,Somewhere,Slave,Radio Model #1,Radio Serial #2,V,10
