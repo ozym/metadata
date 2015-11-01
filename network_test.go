@@ -17,7 +17,6 @@ func init() {
 		Name:     &[]string{"A Network Name"}[0],
 		Notes:    &[]string{"Some Notes\nSome More Notes"}[0],
 		Runnet:   MustParseIPNetwork("192.168.192.0/28"),
-		Locnet:   &[]bool{true}[0],
 		Linknets: []Linknet{
 			Linknet{Name: "From A to B"},
 			Linknet{},

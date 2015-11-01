@@ -10,7 +10,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-const equipmentTemplate = `## Equipment details and installation history.
+const equipmentTemplate = `## Equipment details and deployment history.
 
 ## The equipment serial number.
 serial = "{{.Serial}}"
@@ -26,34 +26,34 @@ notes = """\
 {{$lines := Lines .Notes}}{{range $k, $v := $lines}}    {{$v}}\n\
 {{end}}    """
 
-## An array of equipment installations.
+## An array of equipment deployments.
 
-#[[install]]
-#    ## The location of the equipment installation.
+#[[deploy]]
+#    ## The location of the equipment deployment.
 #    location = ""
 #
-#    ## Installation start time.
+#    ## Deployment start time.
 #    start = 2000-01-01T00:00:00Z
 #
-#    ## Optional installation stop time.
+#    ## Optional deployment stop time.
 #    #stop = datetime
 #
-#    ## Optional installation specific notes.
+#    ## Optional deployment specific notes.
 #    #notes = """\
 #    #    \n\
-#    #    """{{range .Installs}}
+#    #    """{{range .Deploys}}
 
-[[install]]
-    ## The location of the equipment installation.
+[[deploy]]
+    ## The location of the equipment deployment.
     location = "{{.Location}}"
 
-    ## Installation start time.
+    ## Deployment start time.
     start = {{DateTime .Start}}
 
-    ## Optional installation stop time.
+    ## Optional deployment stop time.
 {{if .Stop}}    stop = {{DateTimePtr .Stop}}{{else}}    #stop = datetime{{end}}
 
-    ## Optional installation specific notes.
+    ## Optional deployment specific notes.
 {{if .Notes}}    notes = """\
 {{range $k, $v := $lines}}        {{$v}}\n\
 {{end}}        """{{else}}    #notes = """\
@@ -63,7 +63,7 @@ notes = """\
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 `
 
-type Install struct {
+type Deploy struct {
 	Location string     `json:"location"`
 	Start    time.Time  `json:"start"`
 	Stop     *time.Time `json:"stop,omitempty" toml:"stop"`
@@ -71,11 +71,11 @@ type Install struct {
 }
 
 type Equipment struct {
-	Serial   string    `json:"serial"`
-	Model    string    `json:"model"`
-	Asset    *string   `json:"asset"`
-	Notes    *string   `json:"notes"`
-	Installs []Install `json:"installs,omitempty" toml:"install"`
+	Serial  string   `json:"serial"`
+	Model   string   `json:"model"`
+	Asset   *string  `json:"asset"`
+	Notes   *string  `json:"notes"`
+	Deploys []Deploy `json:"deploys,omitempty" toml:"deploy"`
 }
 
 func LoadEquipment(filename string) (*Equipment, error) {

@@ -1,4 +1,4 @@
-## Equipment details and installation history.
+## Equipment details and deployment history.
 
 ## The equipment serial number.
 serial = "serial"
@@ -15,49 +15,49 @@ notes = """\
     Some More Notes\n\
     """
 
-## An array of equipment installations.
+## An array of equipment deployments.
 
-#[[install]]
-#    ## The location of the equipment installation.
+#[[deploy]]
+#    ## The location of the equipment deployment.
 #    location = ""
 #
-#    ## Installation start time.
+#    ## Deployment start time.
 #    start = 2000-01-01T00:00:00Z
 #
-#    ## Optional installation stop time.
+#    ## Optional deployment stop time.
 #    #stop = datetime
 #
-#    ## Optional installation specific notes.
+#    ## Optional deployment specific notes.
 #    #notes = """\
 #    #    \n\
 #    #    """
 
-[[install]]
-    ## The location of the equipment installation.
+[[deploy]]
+    ## The location of the equipment deployment.
     location = "location1"
 
-    ## Installation start time.
+    ## Deployment start time.
     start = 2010-01-01T00:00:00Z
 
-    ## Optional installation stop time.
+    ## Optional deployment stop time.
     stop = 2011-01-01T00:00:00Z
 
-    ## Optional installation specific notes.
+    ## Optional deployment specific notes.
     #notes = """\
     #    \n\
     #    """
 
-[[install]]
-    ## The location of the equipment installation.
+[[deploy]]
+    ## The location of the equipment deployment.
     location = "location2"
 
-    ## Installation start time.
+    ## Deployment start time.
     start = 2012-01-01T00:00:00Z
 
-    ## Optional installation stop time.
+    ## Optional deployment stop time.
     #stop = datetime
 
-    ## Optional installation specific notes.
+    ## Optional deployment specific notes.
     notes = """\
         Some Notes\n\
         Some More Notes\n\

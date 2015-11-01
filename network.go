@@ -28,9 +28,6 @@ location = "{{.Location}}"
 ## Site specific IP 192.168.X.Y/28 equipment range.
 {{if .Runnet}}runnet = "{{.Runnet}}"{{else}}#runnet = ""{{end}}
 
-## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.
-{{if .Locnet}}locnet = {{.Locnet}}{{else}}#locnet = true|false{{end}}
-
 ## An array of 10.X.Y.N/28 linking networks, the order dictates the network offset.
 
 #[[linknet]]
@@ -195,7 +192,6 @@ type Network struct {
 	Name     *string    `json:"name,omitempty"`
 	Notes    *string    `json:"notes,omitempty"`
 	Runnet   *IPNetwork `json:"runnet,omitempty"`
-	Locnet   *bool      `json:"locnet,omitempty"`
 	Linknets []Linknet  `json:"linknets,omitempty" toml:"linknet"`
 	Devices  []Device   `json:"devices,omitempty" toml:"device"`
 }

@@ -15,9 +15,6 @@ notes = """\
 ## Site specific IP 192.168.X.Y/28 equipment range.
 runnet = "192.168.192.0/28"
 
-## Should a local IP 10.X.Y.0/28 range be assigned based on the runnet.
-locnet = true
-
 ## An array of 10.X.Y.N/28 linking networks, the order dictates the network offset.
 
 #[[linknet]]
