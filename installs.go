@@ -12,6 +12,18 @@ import (
 	"time"
 )
 
+type EquipmentInstall struct {
+	Location string    `csv:"Equipment Location",`
+	Model    string    `csv:"Equipment Model",`
+	Serial   string    `csv:"Equipment Serial Number",`
+	Start    time.Time `csv:"Installation Start",`
+	Stop     time.Time `csv:"Installation Stop",`
+}
+
+type EquipmentInstalls []EquipmentInstall
+
+func (e EquipmentInstalls) CSV() {}
+
 type SensorInstall struct {
 	Station string    `csv:"Seismic Station",`
 	Site    string    `csv:"Sensor Location",`
@@ -26,9 +38,7 @@ type SensorInstall struct {
 
 type SensorInstalls []SensorInstall
 
-func (s SensorInstalls) Title() string {
-	return "Sensor Installations"
-}
+func (s SensorInstalls) CSV() {}
 
 type DataloggerInstall struct {
 	Station string    `csv:"Seismic Station",`
@@ -41,12 +51,10 @@ type DataloggerInstall struct {
 
 type DataloggerInstalls []DataloggerInstall
 
-func (d DataloggerInstalls) Title() string {
-	return "Datalogger Installations"
-}
+func (d DataloggerInstalls) CSV() {}
 
 type Install interface {
-	Title() string
+	CSV()
 }
 
 func Strings(install Install) string {

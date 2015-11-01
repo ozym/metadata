@@ -1,0 +1,5 @@
+Equipment Location,Equipment Model,Equipment Serial Number,Installation Start,Installation Stop
+Somewhere,Model #1,Serial #1,2010-01-01T00:00:00Z,2011-01-01T00:00:00Z
+Somewhere,Model #2,Serial #2,2010-01-01T00:00:00Z,2011-01-01T00:00:00Z
+Somewhere Else,Model #2,Serial #2,2012-01-01T00:00:00Z,2013-01-01T00:00:00Z
+Somewhere Else,Model #1,Serial #1,2012-01-01T00:00:00Z,2013-01-01T00:00:00Z
