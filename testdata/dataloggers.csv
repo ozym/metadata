@@ -1,0 +1,3 @@
+Seismic Station,Datalogger Location,Datalogger Model,Datalogger Serial Number,Installation Start,Installation Stop
+ABCD,01,Model,Serial #1,2010-01-01T00:00:00Z,2011-01-01T00:00:00Z
+EFGH,02,Model,Serial #2,2010-01-01T00:00:00Z,9999-01-01T00:00:00Z

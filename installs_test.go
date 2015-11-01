@@ -5,12 +5,13 @@ import (
 	"testing"
 )
 
-var testInstalls Installs
+var testSensorInstalls SensorInstalls
+var testDataloggerInstalls DataloggerInstalls
 
 func init() {
 
-	testInstalls = Installs{
-		Install{
+	testSensorInstalls = SensorInstalls{
+		SensorInstall{
 			Station: "ABCD",
 			Site:    "10",
 			Model:   "Model",
@@ -21,7 +22,7 @@ func init() {
 			Start:   MustParseTime("2010-01-01T00:00:00Z"),
 			Stop:    MustParseTime("2011-01-01T00:00:00Z"),
 		},
-		Install{
+		SensorInstall{
 			Station: "ABCD",
 			Site:    "20",
 			Model:   "Model",
@@ -32,7 +33,7 @@ func init() {
 			Start:   MustParseTime("2010-01-01T00:00:00Z"),
 			Stop:    MustParseTime("9999-01-01T00:00:00Z"),
 		},
-		Install{
+		SensorInstall{
 			Station: "EFGH",
 			Site:    "10",
 			Model:   "Model",
@@ -43,7 +44,7 @@ func init() {
 			Start:   MustParseTime("2010-01-01T00:00:00Z"),
 			Stop:    MustParseTime("2011-01-01T00:00:00Z"),
 		},
-		Install{
+		SensorInstall{
 			Station: "EFGH",
 			Site:    "20",
 			Model:   "Model",
@@ -54,7 +55,7 @@ func init() {
 			Start:   MustParseTime("2010-01-01T00:00:00Z"),
 			Stop:    MustParseTime("2011-01-01T00:00:00Z"),
 		},
-		Install{
+		SensorInstall{
 			Station: "EFGH",
 			Site:    "20",
 			Model:   "Model",
@@ -67,46 +68,100 @@ func init() {
 		},
 	}
 
+	testDataloggerInstalls = DataloggerInstalls{
+		DataloggerInstall{
+			Station: "ABCD",
+			Site:    "01",
+			Model:   "Model",
+			Serial:  "Serial #1",
+			Start:   MustParseTime("2010-01-01T00:00:00Z"),
+			Stop:    MustParseTime("2011-01-01T00:00:00Z"),
+		},
+		DataloggerInstall{
+			Station: "EFGH",
+			Site:    "02",
+			Model:   "Model",
+			Serial:  "Serial #2",
+			Start:   MustParseTime("2010-01-01T00:00:00Z"),
+			Stop:    MustParseTime("9999-01-01T00:00:00Z"),
+		},
+	}
 }
 
-func TestInstalls_ReadFile(t *testing.T) {
-	t.Log("Compare loaded installs file.")
+func TestSensorInstalls_ReadFile(t *testing.T) {
+	t.Log("Compare loaded sensor installs file.")
 	{
-		b, err := ioutil.ReadFile("testdata/installs.csv")
+		b, err := ioutil.ReadFile("testdata/sensors.csv")
 		if err != nil {
 			t.Fatal(err)
 		}
-		if string(b) != testInstalls.String() {
-			t.Errorf("installs file text mismatch: [\n%s\n]", SimpleDiff(string(b), testInstalls.String()))
+		if string(b) != Strings(testSensorInstalls) {
+			t.Errorf("sensor installs file text mismatch: [\n%s\n]", SimpleDiff(string(b), Strings(testSensorInstalls)))
 		}
 	}
 }
 
-func TestInstalls_LoadFile(t *testing.T) {
-	t.Log("Check loading installs file.")
+func TestSensorInstalls_LoadFile(t *testing.T) {
+	t.Log("Check loading sensor installs file.")
 	{
-		m, err := LoadInstalls("testdata/installs.csv")
-		if err != nil {
+		var installs SensorInstalls
+		if err := LoadInstall("testdata/sensors.csv", &installs); err != nil {
 			t.Fatal(err)
 		}
-		if m == nil {
-			t.Fatalf("installs file load problem")
-		}
-		if m.String() != testInstalls.String() {
-			t.Errorf("installs file decode mismatch: [\n%s\n]", SimpleDiff(m.String(), testInstalls.String()))
+		if Strings(installs) != Strings(testSensorInstalls) {
+			t.Errorf("sensor installs file decode mismatch: [\n%s\n]", SimpleDiff(Strings(installs), Strings(testSensorInstalls)))
 		}
 	}
 }
 
-func TestInstalls_LoadFiles(t *testing.T) {
-	t.Log("Check loading installs files.")
+func TestSensorInstalls_LoadFiles(t *testing.T) {
+	t.Log("Check loading sensor installs files.")
 	{
-		m, err := LoadInstallsDir("testdata", "installs.csv")
+		var installs SensorInstalls
+		if err := LoadInstalls("testdata", "sensors.csv", &installs); err != nil {
+			t.Fatal(err)
+		}
+		if Strings(installs) != Strings(testSensorInstalls) {
+			t.Errorf("sensor installs file decode mismatch: [\n%s\n]", SimpleDiff(Strings(installs), Strings(testSensorInstalls)))
+		}
+	}
+}
+
+func TestDataloggerInstalls_ReadFile(t *testing.T) {
+	t.Log("Compare loaded datalogger installs file.")
+	{
+		b, err := ioutil.ReadFile("testdata/dataloggers.csv")
 		if err != nil {
 			t.Fatal(err)
 		}
-		if m.String() != testInstalls.String() {
-			t.Errorf("installs file decode mismatch: [\n%s\n]", SimpleDiff(m.String(), testInstalls.String()))
+		if string(b) != Strings(testDataloggerInstalls) {
+			t.Errorf("datalogger installs file text mismatch: [\n%s\n]", SimpleDiff(string(b), Strings(testDataloggerInstalls)))
+		}
+	}
+}
+
+func TestDataloggerInstalls_LoadFile(t *testing.T) {
+	t.Log("Check loading datalogger installs file.")
+	{
+		var installs DataloggerInstalls
+		if err := LoadInstall("testdata/dataloggers.csv", &installs); err != nil {
+			t.Fatal(err)
+		}
+		if Strings(installs) != Strings(testDataloggerInstalls) {
+			t.Errorf("datalogger installs file decode mismatch: [\n%s\n]", SimpleDiff(Strings(installs), Strings(testDataloggerInstalls)))
+		}
+	}
+}
+
+func TestDataloggerInstalls_LoadFiles(t *testing.T) {
+	t.Log("Check loading datalogger installs files.")
+	{
+		var installs DataloggerInstalls
+		if err := LoadInstalls("testdata", "dataloggers.csv", &installs); err != nil {
+			t.Fatal(err)
+		}
+		if Strings(installs) != Strings(testDataloggerInstalls) {
+			t.Errorf("datalogger installs file decode mismatch: [\n%s\n]", SimpleDiff(Strings(installs), Strings(testDataloggerInstalls)))
 		}
 	}
 }
