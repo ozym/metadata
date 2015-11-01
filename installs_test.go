@@ -137,7 +137,7 @@ func TestSensorInstalls_LoadFile(t *testing.T) {
 	t.Log("Check loading sensor installs file.")
 	{
 		var installs SensorInstalls
-		if err := LoadInstall("testdata/sensors.csv", &installs); err != nil {
+		if err := LoadList("testdata/sensors.csv", &installs); err != nil {
 			t.Fatal(err)
 		}
 		if Strings(installs) != Strings(testSensorInstalls) {
@@ -150,7 +150,7 @@ func TestSensorInstalls_LoadFiles(t *testing.T) {
 	t.Log("Check loading sensor installs files.")
 	{
 		var installs SensorInstalls
-		if err := LoadInstalls("testdata", "sensors.csv", &installs); err != nil {
+		if err := LoadLists("testdata", "sensors.csv", &installs); err != nil {
 			t.Fatal(err)
 		}
 		if Strings(installs) != Strings(testSensorInstalls) {
@@ -176,7 +176,7 @@ func TestDataloggerInstalls_LoadFile(t *testing.T) {
 	t.Log("Check loading datalogger installs file.")
 	{
 		var installs DataloggerInstalls
-		if err := LoadInstall("testdata/dataloggers.csv", &installs); err != nil {
+		if err := LoadList("testdata/dataloggers.csv", &installs); err != nil {
 			t.Fatal(err)
 		}
 		if Strings(installs) != Strings(testDataloggerInstalls) {
@@ -189,7 +189,7 @@ func TestDataloggerInstalls_LoadFiles(t *testing.T) {
 	t.Log("Check loading datalogger installs files.")
 	{
 		var installs DataloggerInstalls
-		if err := LoadInstalls("testdata", "dataloggers.csv", &installs); err != nil {
+		if err := LoadLists("testdata", "dataloggers.csv", &installs); err != nil {
 			t.Fatal(err)
 		}
 		if Strings(installs) != Strings(testDataloggerInstalls) {
@@ -215,7 +215,7 @@ func TestEquipmentInstalls_LoadFile(t *testing.T) {
 	t.Log("Check loading equipment installs file.")
 	{
 		var installs EquipmentInstalls
-		if err := LoadInstall("testdata/equipment.csv", &installs); err != nil {
+		if err := LoadList("testdata/equipment.csv", &installs); err != nil {
 			t.Fatal(err)
 		}
 		if Strings(installs) != Strings(testEquipmentInstalls) {
@@ -228,7 +228,7 @@ func TestEquipmentInstalls_LoadFiles(t *testing.T) {
 	t.Log("Check loading equipment installs files.")
 	{
 		var installs EquipmentInstalls
-		if err := LoadInstalls("testdata", "equipment.csv", &installs); err != nil {
+		if err := LoadLists("testdata", "equipment.csv", &installs); err != nil {
 			t.Fatal(err)
 		}
 		if Strings(installs) != Strings(testEquipmentInstalls) {
