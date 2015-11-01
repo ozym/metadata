@@ -14,6 +14,12 @@ type RadioInstall struct {
 	Frequency float64 `csv:"Frequency Key",`
 }
 
+type Asset struct {
+	Model  string `csv:"Model Name",`
+	Serial string `csv:"Serial Number",`
+	Asset  string `csv:"Asset Number",`
+}
+
 type EquipmentInstall struct {
 	Location string    `csv:"Equipment Location",`
 	Model    string    `csv:"Equipment Model",`
@@ -43,11 +49,13 @@ type DataloggerInstall struct {
 	Stop    time.Time `csv:"Installation Stop",`
 }
 
+type AssetList []Asset
 type RadioInstalls []RadioInstall
 type EquipmentInstalls []EquipmentInstall
 type SensorInstalls []SensorInstall
 type DataloggerInstalls []DataloggerInstall
 
+func (a AssetList) List()          {}
 func (r RadioInstalls) List()      {}
 func (e EquipmentInstalls) List()  {}
 func (s SensorInstalls) List()     {}
